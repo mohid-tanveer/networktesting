@@ -5,8 +5,12 @@ import string
 # Define the file size in bytes
 file_size = 10 * 1024 * 1024 * 1024  # 10GB
 
+# Define and create (if doesn't exist) the directory to store the output files
+output_dir = "tengigfile"
+os.makedirs(output_dir, exist_ok=True)
+
 # Define the path to the output file
-output_file = "tengig.txt"
+output_file = os.path.join(output_dir, f"tengig.txt")
 
 # Define the chunk size (1MB)
 chunk_size = 1024 * 1024
