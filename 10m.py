@@ -11,7 +11,7 @@ output_dir = "tenmegfiles"
 # Create the directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)
 
-for i in range(0, 10000):
+for i in range(0, 1000):
     # Define the path to the output file
     output_file = os.path.join(output_dir, f"tenmeg-{i}.txt")
 
