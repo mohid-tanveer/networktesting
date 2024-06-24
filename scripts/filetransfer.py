@@ -64,19 +64,19 @@ for i in range(1, 4):
 # to csv files
 
 # write to the ten gig read times csv file
-with open('teng_read_times.csv', mode='a') as file:
+with open('../results/teng_read_times.csv', mode='a') as file:
     writer = csv.writer(file)
     for row in teng_read_times:
         writer.writerow(row)
 
 # write to the ten meg read times csv file
-with open('tenm_read_times.csv', mode='a') as file:
+with open('../results/tenm_read_times.csv', mode='a') as file:
     writer = csv.writer(file)
     for row in tenm_read_times:
         writer.writerow(row)
 
 # write to the individual read times csv file
-with open('individual_read_times.csv', mode='a') as file:
+with open('../results/individual_read_times.csv', mode='a') as file:
     writer = csv.writer(file)
     for row in individual_read_times:
         writer.writerow(row)
