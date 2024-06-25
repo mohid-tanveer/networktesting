@@ -12,12 +12,11 @@ networktesting/
 ├── scripts/
 │    ├── filetransfer.py
 │    └── data_creation/
-│          ├── 10g.py
-│          └── 10m.py
+│          ├── 10g.py (sample script to create a 10gb file)
+│          └── 10m.py (sample script to create 10gb worth of 10mb files)
 └── results/
-      ├── 10g_read_times.csv
-      ├── 10m_read_times.csv
-      └── individual_read_times.csv
+      ├── tengigfile.csv (output file to store transfer results from a folder called tengigfile)
+      └── tenmegfiles.csv (output file to store transfer results from a folder called tenmegfiles)
 ```
 
 - `README.md`: This file provides an overview of the project and its file structure.
