@@ -55,5 +55,5 @@ def networktesting(directory_path):
 
 def main():
     # test the network transfer speed of the specified directory/directories
-    networktesting('../tengigfile')
-    networktesting('../tenmegfiles')
+    networktesting('\\mtanveer@splprhpc07\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing\tengigfile')
+    networktesting('\\mtanveer@splprhpc07\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing\tenmegfiles')
