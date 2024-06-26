@@ -1,6 +1,10 @@
 import os
 import time
 import csv
+import socket
+
+# Get the host name
+host_name = socket.gethostname()
 
 # remote path to the folder with the files to be read
 remote_path = '\\splprhpc07\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing'
