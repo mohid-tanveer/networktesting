@@ -2,6 +2,9 @@ import os
 import time
 import csv
 
+# remote path to the folder with the files to be read
+remote_path = '\\splprhpc07\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing'
+
 def read_files_from_directory(directory):
     elapsed_time = 0
     file_total_size = 0
@@ -45,7 +48,7 @@ def networktesting(directory_path):
     # check if a results file exists
     exists = True if os.path.exists(f'../results/{folder_name}.csv') else False
     # write the results to a csv file
-    with open(f'\\splprhpc07\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing\results\{folder_name}.csv', mode='a') as file:
+    with open(f'{remote_path}\results\{folder_name}.csv', mode='a') as file:
         writer = csv.writer(file)
         # if the file does not exist, write the headers
         if not exists:
@@ -55,5 +58,5 @@ def networktesting(directory_path):
 
 def main():
     # test the network transfer speed of the specified directory/directories
-    networktesting('\\splprhpc07\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing\tengigfile')
-    networktesting('\\splprhpc07\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing\tenmegfiles')
+    networktesting('{remote_path}\tengigfile')
+    networktesting('{remote_path}\tenmegfiles')
