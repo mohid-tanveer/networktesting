@@ -11,6 +11,7 @@ networktesting/
 ├── README.md
 ├── scripts/
 │    ├── filetransfer.py
+│    ├── localfiletransfer.py
 │    └── data_creation/
 │          ├── 10g.py (sample script to create a 10gb file)
 │          └── 10m.py (sample script to create 10gb worth of 10mb files)
@@ -21,7 +22,7 @@ networktesting/
 ```
 
 - `README.md`: This file provides an overview of the project and its file structure.
-- `scripts/`: This directory contains the scripts used for both the network testing and data creation.
+- `scripts/`: This directory contains the scripts used for both the network/storage testing as well as data creation.
 - `results/`: This directory stores the results of the network testing in CSV format.
 
 ## Usage
