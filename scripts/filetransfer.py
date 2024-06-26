@@ -7,7 +7,9 @@ import socket
 host_name = socket.gethostname()
 
 # remote path to the folder with the files to be read
-remote_path = '\\jude.stjude.org\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing'
+# change pn001 to appropriate protocol node for testing
+curr_pn = 'pn001'
+remote_path = '\\jude-{curr_pn}.stjude.org\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing'
 
 def read_files_from_directory(directory, individual_read_times):
     elapsed_time = 0
@@ -33,7 +35,7 @@ def read_files_from_directory(directory, individual_read_times):
             if individual_read_times is not None:
                 t = time.localtime()
                 current_time = time.strftime("%H:%M:%S", t)
-                individual_read_times.append(temp_elapsed_time, current_time, file_size)
+                individual_read_times.append(temp_elapsed_time, current_time, file_size, curr_pn)
     
     # calculate the transfer speed
     transfer_speed = file_total_size / elapsed_time
@@ -55,7 +57,7 @@ def networktesting(directory_path, store_individual_read_times=False):
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S", t)
         # append the tuple to the read times list
-        read_times.append((time_taken, current_time, file_size, transfer_speed))
+        read_times.append((time_taken, current_time, file_size, transfer_speed, curr_pn))
     # check if a results file exists
     exists = True if os.path.exists(f'{remote_path}\results\{host_name}_{folder_name}.csv') else False
     # write the results to a csv file
@@ -63,7 +65,7 @@ def networktesting(directory_path, store_individual_read_times=False):
         writer = csv.writer(file)
         # if the file does not exist, write the headers
         if not exists: 
-            writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed'])
+            writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed', 'protocolnode'])
         for row in read_times:
             writer.writerow(row)
     # if storing individual read times, write the results to a csv file
@@ -73,7 +75,7 @@ def networktesting(directory_path, store_individual_read_times=False):
             writer = csv.writer(file)
             # if the file does not exist, write the headers
             if not exists: 
-                writer.writerow(['time', 'timestamp', 'filesize'])
+                writer.writerow(['time', 'timestamp', 'filesize', 'protocolnode'])
             for row in individual_read_times:
                 writer.writerow(row)
 
