@@ -7,7 +7,7 @@ import socket
 host_name = socket.gethostname()
 
 # remote path to the folder with the files to be read
-remote_path = '\\splprhpc07\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing'
+remote_path = '\\jude.stjude.org\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing'
 
 def read_files_from_directory(directory):
     elapsed_time = 0
