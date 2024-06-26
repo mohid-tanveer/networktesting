@@ -6,7 +6,7 @@ This repository contains files and scripts for testing network and storage trans
 
 The file structure of this repository is as follows:
 
-```
+```plaintext
 networktesting/
 ├── README.md
 ├── scripts/
