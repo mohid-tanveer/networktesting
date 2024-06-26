@@ -45,7 +45,7 @@ def networktesting(directory_path):
     # check if a results file exists
     exists = True if os.path.exists(f'../results/{folder_name}.csv') else False
     # write the results to a csv file
-    with open(f'../results/{folder_name}.csv', mode='a') as file:
+    with open(f'\\splprhpc07\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing\results\{folder_name}.csv', mode='a') as file:
         writer = csv.writer(file)
         # if the file does not exist, write the headers
         if not exists:
