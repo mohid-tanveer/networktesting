@@ -90,3 +90,4 @@ def main():
     networktesting(rf'{remote_path}\tengigfile')
     print("testing tenmegfiles")
     networktesting(rf'{remote_path}\tenmegfiles', True)
+main()
