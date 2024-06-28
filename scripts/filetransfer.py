@@ -23,6 +23,7 @@ def read_files_from_directory(directory, individual_read_times):
             file_path = os.path.join(root, file)
             # get file size and add to total file size
             file_size = os.path.getsize(file_path)
+            print(file_path, file_size)
             file_total_size += file_size
             temp_start_time = time.time()
             with open(file_path, 'r') as file:
