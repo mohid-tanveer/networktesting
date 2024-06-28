@@ -9,7 +9,7 @@ host_name = socket.gethostname()
 # remote path to the folder with the files to be read
 # change pn001 to appropriate protocol node for testing
 curr_pn = 'pn001'
-remote_path = '\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\network_testing'
+remote_path = rf'\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\network_testing'
 
 def read_files_from_directory(directory, individual_read_times):
     elapsed_time = 0
@@ -36,7 +36,7 @@ def read_files_from_directory(directory, individual_read_times):
             if individual_read_times is not None:
                 t = time.localtime()
                 current_time = time.strftime("%H:%M:%S", t)
-                individual_read_times.append(temp_elapsed_time, current_time, file_size, curr_pn)
+                individual_read_times.append((temp_elapsed_time, current_time, file_size, curr_pn))
     
     # calculate the transfer speed
     transfer_speed = file_total_size / elapsed_time
@@ -60,9 +60,9 @@ def networktesting(directory_path, store_individual_read_times=False):
         # append the tuple to the read times list
         read_times.append((time_taken, current_time, file_size, transfer_speed, curr_pn))
     # check if a results file exists
-    exists = True if os.path.exists(f'{remote_path}\results\{host_name}_{folder_name}.csv') else False
+    exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}.csv') else False
     # write the results to a csv file
-    with open(f'{remote_path}\results\{host_name}_{folder_name}.csv', mode='a') as file:
+    with open(rf'{remote_path}\results\{host_name}_{folder_name}.csv', mode='a') as file:
         writer = csv.writer(file)
         # if the file does not exist, write the headers
         if not exists: 
@@ -71,8 +71,8 @@ def networktesting(directory_path, store_individual_read_times=False):
             writer.writerow(row)
     # if storing individual read times, write the results to a csv file
     if store_individual_read_times:
-        exists = True if os.path.exists(f'{remote_path}\results\{host_name}_{folder_name}_individual.csv') else False
-        with open(f'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='a') as file:
+        exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv') else False
+        with open(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='a') as file:
             writer = csv.writer(file)
             # if the file does not exist, write the headers
             if not exists: 
@@ -83,6 +83,6 @@ def networktesting(directory_path, store_individual_read_times=False):
 def main():
     # test the network transfer speed of the specified directory/directories
     print("testing tengigfile")
-    networktesting('{remote_path}\tengigfile')
+    networktesting(rf'{remote_path}\tengigfile')
     print("testing tenmegfiles")
-    networktesting('{remote_path}\tenmegfiles', True)
+    networktesting(rf'{remote_path}\tenmegfiles', True)
