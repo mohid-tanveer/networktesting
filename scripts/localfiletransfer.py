@@ -27,7 +27,7 @@ def read_files_from_directory(directory, individual_read_times):
             if individual_read_times is not None:
                 t = time.localtime()
                 current_time = time.strftime("%H:%M:%S", t)
-                individual_read_times.append(temp_elapsed_time, current_time, file_size)
+                individual_read_times.append((temp_elapsed_time, current_time, file_size))
     
     # calculate the transfer speed
     transfer_speed = file_total_size / elapsed_time
