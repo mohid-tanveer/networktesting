@@ -50,30 +50,30 @@ def networktesting(directory_path, store_individual_read_times=False):
         # append the tuple to the read times list
         read_times.append((time_taken, current_time, file_size, transfer_speed))
     # check if a results file exists
-    exists = True if os.path.exists(f'../results/cluster_{folder_name}.csv') else False
+    exists = True if os.path.exists(f'../results/clusterIB_{folder_name}.csv') else False
     # if result file doesn't exist, create it and write the headers
     if not exists:
-        with open(f'../results/cluster_{folder_name}.csv', mode='w') as file:
+        with open(f'../results/clusterIB_{folder_name}.csv', mode='w') as file:
             writer = csv.writer(file)
             # if the file did not exist, write the headers
             if not exists: 
                 writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed', 'protocolnode'])
     # write the results to a csv file
-    with open(f'../results/cluster_{folder_name}.csv', mode='a') as file:
+    with open(f'../results/clusterIB_{folder_name}.csv', mode='a') as file:
         writer = csv.writer(file)
         for row in read_times:
             writer.writerow(row)
     # if storing individual read times, write the results to a csv file
     if store_individual_read_times:
-        exists = True if os.path.exists(f'../results/cluster_{folder_name}_individual.csv') else False
+        exists = True if os.path.exists(f'../results/clusterIB_{folder_name}_individual.csv') else False
         # if result file doesn't exist, create it and write the headers
         if not exists:
-            with open(f'../results/cluster_{folder_name}_individual.csv', mode='w') as file:
+            with open(f'../results/clusterIB_{folder_name}_individual.csv', mode='w') as file:
                 writer = csv.writer(file)
                 # if the file did not exist, write the headers
                 if not exists: 
                     writer.writerow(['time', 'timestamp', 'filesize', 'protocolnode'])
-        with open(f'../results/cluster_{folder_name}_individual.csv', mode='a') as file:
+        with open(f'../results/clusterIB_{folder_name}_individual.csv', mode='a') as file:
             writer = csv.writer(file)
             for row in individual_read_times:
                 writer.writerow(row)
