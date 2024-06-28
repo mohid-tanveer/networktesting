@@ -11,9 +11,12 @@ host_name = socket.gethostname()
 curr_pn = 'pn001'
 remote_path = rf'\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\network_testing'
 
-def read_files_from_directory(directory, individual_read_times):
+def read_files_from_directory(directory, store_individual_read_times):
     elapsed_time = 0
     file_total_size = 0
+
+    # if storing individual read times, init the list
+    individual_read_times = [] if store_individual_read_times else None
     
     for root, dirs, files in os.walk(directory):
         # iterate over all files in the directory
@@ -40,19 +43,33 @@ def read_files_from_directory(directory, individual_read_times):
     # calculate the transfer speed
     transfer_speed = file_total_size / elapsed_time
 
-    return elapsed_time, file_total_size, transfer_speed, individual_read_times
+    # if storing individual read times, write the results to a csv file
+    if store_individual_read_times:
+        folder_name =  os.path.basename(directory)
+        exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv') else False
+        # if result file doesn't exist, create it and write the headers
+        if not exists:
+            with open(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='w') as file:
+                writer = csv.writer(file)
+                # if the file did not exist, write the headers
+                if not exists: 
+                    writer.writerow(['time', 'timestamp', 'filesize', 'protocolnode'])
+        with open(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='a') as file:
+            writer = csv.writer(file)
+            for row in individual_read_times:
+                writer.writerow(row)
+
+    return elapsed_time, file_total_size, transfer_speed
 
 def networktesting(directory_path, store_individual_read_times=False):
     # init the list to store the read times tuples
     read_times = []
-    # if storing individual read times, init the list
-    individual_read_times = [] if store_individual_read_times else None
     # get the folder name
     folder_name =  os.path.basename(directory_path)
     # iterate over the directory 3 times
     for i in range(1, 4):
         # read files from directory and get the time taken, file size and transfer speed
-        time_taken, file_size, transfer_speed, individual_read_times = read_files_from_directory(directory_path, individual_read_times)
+        time_taken, file_size, transfer_speed = read_files_from_directory(directory_path, store_individual_read_times)
         print(f"Total time taken for {folder_name} test {i}: {time_taken} seconds")
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S", t)
@@ -72,20 +89,6 @@ def networktesting(directory_path, store_individual_read_times=False):
         writer = csv.writer(file)
         for row in read_times:
             writer.writerow(row)
-    # if storing individual read times, write the results to a csv file
-    if store_individual_read_times:
-        exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv') else False
-        # if result file doesn't exist, create it and write the headers
-        if not exists:
-            with open(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='w') as file:
-                writer = csv.writer(file)
-                # if the file did not exist, write the headers
-                if not exists: 
-                    writer.writerow(['time', 'timestamp', 'filesize', 'protocolnode'])
-        with open(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='a') as file:
-            writer = csv.writer(file)
-            for row in individual_read_times:
-                writer.writerow(row)
 
 def main():
     # test the network transfer speed of the specified directory/directories
