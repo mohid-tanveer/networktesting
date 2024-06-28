@@ -61,26 +61,30 @@ def networktesting(directory_path, store_individual_read_times=False):
         read_times.append((time_taken, current_time, file_size, transfer_speed, curr_pn))
     # check if a results file exists
     exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}.csv') else False
+    # if result file doesn't exist, create it and write the headers
     if not exists:
-        os.makedirs(rf'{remote_path}\results\{host_name}_{folder_name}.csv')
+        with open(rf'{remote_path}\results\{host_name}_{folder_name}.csv', mode='w') as file:
+            writer = csv.writer(file)
+            # if the file did not exist, write the headers
+            if not exists: 
+                writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed', 'protocolnode'])
     # write the results to a csv file
     with open(rf'{remote_path}\results\{host_name}_{folder_name}.csv', mode='a') as file:
         writer = csv.writer(file)
-        # if the file did not exist, write the headers
-        if not exists: 
-            writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed', 'protocolnode'])
         for row in read_times:
             writer.writerow(row)
     # if storing individual read times, write the results to a csv file
     if store_individual_read_times:
         exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv') else False
+        # if result file doesn't exist, create it and write the headers
         if not exists:
-            os.makedirs(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv')   
+            with open(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='w') as file:
+                writer = csv.writer(file)
+                # if the file did not exist, write the headers
+                if not exists: 
+                    writer.writerow(['time', 'timestamp', 'filesize', 'protocolnode'])
         with open(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='a') as file:
             writer = csv.writer(file)
-            # if the file does not exist, write the headers
-            if not exists: 
-                writer.writerow(['time', 'timestamp', 'filesize', 'protocolnode'])
             for row in individual_read_times:
                 writer.writerow(row)
 
