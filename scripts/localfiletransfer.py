@@ -14,6 +14,7 @@ def read_files_from_directory(directory, individual_read_times):
             file_path = os.path.join(root, file)
             # get file size and add to total file size
             file_size = os.path.getsize(file_path)
+            print(file_path, file_size)
             file_total_size += file_size
             temp_start_time = time.time()
             with open(file_path, 'r') as file:
@@ -80,5 +81,8 @@ def networktesting(directory_path, store_individual_read_times=False):
 
 def main():
     # test the network transfer speed of the specified directory/directories
+    print("testing tengigfile")
     networktesting('../tengigfile')
+    print("testing tenmegfiles")
     networktesting('../tenmegfiles', True)
+main()
