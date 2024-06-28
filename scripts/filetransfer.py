@@ -19,7 +19,6 @@ def read_files_from_directory(directory, individual_read_times):
         # iterate over all files in the directory
         # in the case of one file, will only be one iteration
         for file in files:
-            print("starting file")
             # get individual file path and read the file
             file_path = os.path.join(root, file)
             # get file size and add to total file size
