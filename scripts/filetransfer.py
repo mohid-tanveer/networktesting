@@ -89,6 +89,7 @@ def networktesting(directory_path, store_individual_read_times=False):
                 writer.writerow(row)
 
 def main():
+    print(f"Testing {curr_pn}")
     # test the network transfer speed of the specified directory/directories
     print("testing tengigfile")
     networktesting(rf'{remote_path}\tengigfile')
