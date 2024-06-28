@@ -8,7 +8,7 @@ host_name = socket.gethostname()
 
 # remote path to the folder with the files to be read
 # change pn001 to appropriate protocol node for testing
-curr_pn = 'pn001'
+curr_pn = 'pn002'
 remote_path = rf'\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\network_testing'
 
 def read_files_from_directory(directory, individual_read_times):
