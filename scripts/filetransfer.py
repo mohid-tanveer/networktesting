@@ -9,7 +9,7 @@ host_name = socket.gethostname()
 # remote path to the folder with the files to be read
 # change pn001 to appropriate protocol node for testing
 curr_pn = 'pn001'
-remote_path = '\\jude-{curr_pn}.stjude.org\ResearchHome\Departments\InformationServices\RI\HPRC\mtanveer\network_testing'
+remote_path = '\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\network_testing'
 
 def read_files_from_directory(directory, individual_read_times):
     elapsed_time = 0
@@ -19,6 +19,7 @@ def read_files_from_directory(directory, individual_read_times):
         # iterate over all files in the directory
         # in the case of one file, will only be one iteration
         for file in files:
+            print("starting file")
             # get individual file path and read the file
             file_path = os.path.join(root, file)
             # get file size and add to total file size
@@ -81,5 +82,7 @@ def networktesting(directory_path, store_individual_read_times=False):
 
 def main():
     # test the network transfer speed of the specified directory/directories
+    print("testing tengigfile")
     networktesting('{remote_path}\tengigfile')
+    print("testing tenmegfiles")
     networktesting('{remote_path}\tenmegfiles', True)
