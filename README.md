@@ -12,6 +12,9 @@ networktesting/
 ├── scripts/
 │    ├── filetransfer.py
 │    ├── localfiletransfer.py
+│    ├── automator.py
+│    ├── afterhours.py
+│    ├── control.txt
 │    └── data_creation/
 │          ├── 10g.py (sample script to create a 10gb file)
 │          └── 10m.py (sample script to create 10gb worth of 10mb files)
