@@ -1,0 +1,42 @@
+import os
+import time
+import socket
+
+# get the host name
+host_name = socket.gethostname()
+
+# set up protocol node choices
+pn_choices = ['pn001', 'pn002', 'pn003', 'pn004', 'pn005', 'pn006']
+
+# control file path
+CONTROL_FILE = rf"\\jude.stjude.org\informationservices\RI\HPRC\mtanveer\networktesting\scripts\control.txt"
+
+# local script path
+SCRIPT_PATH = rf"C:\path\to\your\script.py"
+
+# check if it's this machine's turn to run the script
+def check_turn():
+    with open(CONTROL_FILE, "r") as file:
+        current_control = file.read().strip()
+    return current_control == host_name
+
+# Function to update control file to switch to the other machine
+def switch_turn():
+    next_machine = "D242016" if host_name == "D240075" else "D240075"
+    with open(CONTROL_FILE, "w") as f:
+        f.write(next_machine)
+
+# check and run loop
+while True:
+    # alternate between protocol nodes
+    for pn in pn_choices:
+        # check if local machine's turn
+        if check_turn():
+            print(f"Running script")
+            arg = pn
+            os.system(f"python {SCRIPT_PATH} {arg}")
+            switch_turn()
+        else:
+            # if not wait before checking again
+            print(f"Waiting for turn...")
+            time.sleep(10)

@@ -1,3 +1,4 @@
+import sys
 import os
 import time
 import csv
@@ -8,7 +9,7 @@ host_name = socket.gethostname()
 
 # remote path to the folder with the files to be read
 # change pn001 to appropriate protocol node for testing
-curr_pn = 'pn003'
+curr_pn = sys.argv[1]
 remote_path = rf'\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\networktesting'
 
 def read_files_from_directory(directory, individual_read_times):
