@@ -80,9 +80,10 @@ def networktesting(directory_path, store_individual_read_times=False):
                 writer.writerow(row)
 
 def main():
-    # test the network transfer speed of the specified directory/directories
-    print("testing tengigfile")
-    networktesting('../tengigfile')
-    print("testing tenmegfiles")
-    networktesting('../tenmegfiles', True)
+    for i in range(2):
+        # test the network transfer speed of the specified directory/directories
+        print("testing tengigfile")
+        networktesting('../tengigfile')
+        print("testing tenmegfiles")
+        networktesting('../tenmegfiles', True)
 main()
