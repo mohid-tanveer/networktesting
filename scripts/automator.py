@@ -24,7 +24,7 @@ def check_turn():
 
 # Function to update control file to switch to the other machine
 def switch_turn():
-    next_machine = "D242016" if host_name == "D240075" else "D240075"
+    next_machine = "D242016" if host_name == "D241962" else "D241962"
     with open(CONTROL_FILE, "w") as f:
         f.write(next_machine)
 
