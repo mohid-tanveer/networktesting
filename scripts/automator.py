@@ -45,5 +45,5 @@ while True:
                 round_complete = True
             else:
                 # if not wait before checking again
-                print(f"Waiting for turn...")
+                print(f"Waiting for turn on protocol node {pn}...")
                 time.sleep(10)
