@@ -43,8 +43,6 @@ def read_files_from_directory_single(directory):
 def read_single_file(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
-    t = time.localtime()
-    current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
     return 
 
 def read_files_from_directory_multi(directory):
@@ -67,9 +65,8 @@ def read_files_from_directory_multi(directory):
 
     return elapsed_time, file_total_size, transfer_speed
 
-def networktesting(directory_path):
+def networktesting_multi(directory_path):
     # init the list to store the read times tuples
-    single_read_times = []
     multi_read_times = []
     # get the folder name
     folder_name =  os.path.basename(directory_path)
@@ -81,6 +78,27 @@ def networktesting(directory_path):
     current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
     # append the tuple to the read times list
     multi_read_times.append((time_taken, current_time, file_size, transfer_speed, curr_pn))
+    # check if a results file exists
+    exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}.csv') else False
+    # if result file doesn't exist, create it and write the headers
+    if not exists:
+        with open(rf'{remote_path}\results\{host_name}_{folder_name}_multi.csv', mode='w') as file:
+            writer = csv.writer(file)
+            # if the file did not exist, write the headers
+            if not exists: 
+                writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed', 'protocolnode'])
+    # write the results to a csv file
+    with open(rf'{remote_path}\results\{host_name}_{folder_name}_multi.csv', mode='a') as file:
+        writer = csv.writer(file)
+        for row in multi_read_times:
+            writer.writerow(row)
+
+def networktesting_single(directory_path):
+    # init the list to store the read times tuples
+    single_read_times = []
+    # get the folder name
+    folder_name =  os.path.basename(directory_path)
+    # read files from directory and get the time taken, file size and transfer speed
     # single-threaded
     time_taken, file_size, transfer_speed = read_files_from_directory_single(directory_path)
     print(f"Total time taken for single-threaded {folder_name} test: {time_taken} seconds")
@@ -102,14 +120,16 @@ def networktesting(directory_path):
         writer = csv.writer(file)
         for row in single_read_times:
             writer.writerow(row)
-        for row in multi_read_times:
-            writer.writerow(row)
 
 
 def main():
     print(f"Testing {curr_pn}")
     # test the network transfer speed of the specified directory/directories
     print("testing tenmegfiles")
-    networktesting(rf'{remote_path}\tenmegfiles')
+    networktesting_single(rf'{remote_path}\tenmegfiles')
+    time.sleep(5)
+    print("testing tenmegfiles")
+    networktesting_multi(rf'{remote_path}\tenmegfiles')
+    
 
 main()
