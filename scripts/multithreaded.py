@@ -26,7 +26,6 @@ def read_files_from_directory_single(directory):
             file_path = os.path.join(root, file)
             # get file size and add to total file size
             file_size = os.path.getsize(file_path)
-            print(file_path, file_size)
             file_total_size += file_size
             temp_start_time = time.time()
             with open(file_path, 'r') as file:
@@ -42,19 +41,15 @@ def read_files_from_directory_single(directory):
     return elapsed_time, file_total_size, transfer_speed
 
 def read_single_file(file_path):
-    file_size = os.path.getsize(file_path)
-    temp_start_time = time.time()
     with open(file_path, 'r') as file:
         content = file.read()
-    temp_end_time = time.time()
-    temp_elapsed_time = temp_end_time - temp_start_time
     t = time.localtime()
     current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
-    return (temp_elapsed_time, current_time, file_size, curr_pn)
+    return 
 
 def read_files_from_directory_multi(directory):
     elapsed_time = 0
-    file_total_size = 0
+    file_total_size = 10737418240
     tasks = []
     start_time = time.time()
     with ThreadPoolExecutor(max_workers=5) as executor:
@@ -65,13 +60,8 @@ def read_files_from_directory_multi(directory):
                 # get individual file path and submit a task to read the file
                 file_path = os.path.join(root, file)
                 tasks.append(executor.submit(read_single_file, file_path))
-        for future in as_completed(tasks):
-            # get the result as a tuple from the future
-            info = future.result()
-            file_total_size += info[2]
-            elapsed_time += info[0]
     end_time = time.time()
-    print(f"Total time taken for reading files: {elapsed_time} or {end_time-start_time} seconds")
+    elapsed_time = end_time - start_time
     # calculate the transfer speed
     transfer_speed = file_total_size / elapsed_time
 
