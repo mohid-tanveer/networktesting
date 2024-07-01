@@ -2,6 +2,8 @@ import os
 import time
 import socket
 
+round_complete = False
+
 # get the host name
 host_name = socket.gethostname()
 
@@ -12,7 +14,7 @@ pn_choices = ['pn001', 'pn002', 'pn003', 'pn004', 'pn005', 'pn006']
 CONTROL_FILE = rf"\\jude.stjude.org\informationservices\RI\HPRC\mtanveer\networktesting\scripts\control.txt"
 
 # local script path
-SCRIPT_PATH = rf"C:\path\to\your\script.py"
+SCRIPT_PATH = rf"C:\Users\mtanveer\Downloads\networktesting\scripts\filetransfer.py"
 
 # check if it's this machine's turn to run the script
 def check_turn():
@@ -30,13 +32,18 @@ def switch_turn():
 while True:
     # alternate between protocol nodes
     for pn in pn_choices:
-        # check if local machine's turn
-        if check_turn():
-            print(f"Running script")
-            arg = pn
-            os.system(f"python {SCRIPT_PATH} {arg}")
-            switch_turn()
-        else:
-            # if not wait before checking again
-            print(f"Waiting for turn...")
-            time.sleep(10)
+        # reset round complete
+        round_complete = False
+        while not round_complete:
+            # check if local machine's turn
+            if check_turn():
+                print(f"Running script")
+                arg = pn
+                os.system(f"python {SCRIPT_PATH} {arg}")
+                switch_turn()
+                # indicate that round is complete
+                round_complete = True
+            else:
+                # if not wait before checking again
+                print(f"Waiting for turn...")
+                time.sleep(10)
