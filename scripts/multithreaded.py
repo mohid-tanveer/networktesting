@@ -121,6 +121,6 @@ def main():
     print(f"Testing {curr_pn}")
     # test the network transfer speed of the specified directory/directories
     print("testing tenmegfiles")
-    networktesting(rf'{remote_path}\tenmegfiles', True)
+    networktesting(rf'{remote_path}\tenmegfiles')
 
 main()
