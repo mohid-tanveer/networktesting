@@ -3,6 +3,7 @@ import os
 import time
 import csv
 import socket
+from secret import pnpaths
 
 # Get the host name
 host_name = socket.gethostname()
@@ -10,7 +11,7 @@ host_name = socket.gethostname()
 # get current protocol node from command line argument
 curr_pn = sys.argv[1]
 # remote path to the folder with the files to be read
-remote_path = rf'\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\networktesting'
+remote_path = pnpaths[int(curr_pn[-1]) - 1]
 
 def read_files_from_directory(directory, individual_read_times):
     elapsed_time = 0
@@ -96,5 +97,5 @@ def main():
     networktesting(rf'{remote_path}\tengigfile')
     print("testing tenmegfiles")
     networktesting(rf'{remote_path}\tenmegfiles', True)
-    
+
 main()

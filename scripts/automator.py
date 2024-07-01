@@ -1,6 +1,7 @@
 import os
 import time
 import socket
+from networktesting.scripts.secret import cf, sp, turn_order
 
 round_complete = False
 
@@ -10,11 +11,11 @@ host_name = socket.gethostname()
 # set up protocol node choices
 pn_choices = ['pn001', 'pn002', 'pn003', 'pn004', 'pn005', 'pn006']
 
-# control file path
-CONTROL_FILE = rf"\\jude.stjude.org\informationservices\RI\HPRC\mtanveer\networktesting\scripts\control.txt"
+# control file path (./control.txt)
+CONTROL_FILE = cf
 
-# local script path
-SCRIPT_PATH = rf"C:\Users\mtanveer\Downloads\networktesting\scripts\filetransfer.py"
+# local script path (./filetransfer.py)
+SCRIPT_PATH = sp
 
 # check if it's this machine's turn to run the script
 def check_turn():
@@ -24,7 +25,7 @@ def check_turn():
 
 # Function to update control file to switch to the other machine
 def switch_turn():
-    next_machine = "D242016" if host_name == "D241962" else "D241962"
+    next_machine = turn_order[(turn_order.index(host_name) + 1) % len(turn_order)]
     with open(CONTROL_FILE, "w") as f:
         f.write(next_machine)
 

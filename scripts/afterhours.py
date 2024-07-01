@@ -2,13 +2,18 @@ import os
 import time
 import csv
 import socket
+from secret import pnpaths
 
 # Get the host name
 host_name = socket.gethostname()
 
-# remote path to the folder with the files to be read
-# change pn001 to appropriate protocol node for testing
-pn_choices = ['pn001', 'pn002', 'pn003', 'pn004', 'pn005', 'pn006']
+# protocol node choices mapped to their remote paths
+pn_choices = [('pn001', pnpaths[0]), 
+              ('pn002', pnpaths[1]), 
+              ('pn003', pnpaths[2]), 
+              ('pn004', pnpaths[3]), 
+              ('pn005', pnpaths[4]), 
+              ('pn006', pnpaths[5])]
 
 
 def read_files_from_directory(directory, individual_read_times, curr_pn):
@@ -90,9 +95,8 @@ def networktesting(directory_path, store_individual_read_times=False, remote_pat
 
 def main():
     # test the network transfer speed of the specified directory/directories
-    for curr_pn in pn_choices:
+    for curr_pn, remote_path in pn_choices:
         print(f"Testing {curr_pn}")
-        remote_path = rf'\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\networktesting'
         print("testing tengigfile")
         networktesting(rf'{remote_path}\tengigfile', False, remote_path, curr_pn)
         print("testing tenmegfiles")

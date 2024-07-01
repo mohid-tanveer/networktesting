@@ -2,11 +2,12 @@ import sys
 import os
 import time
 import csv
+from secret import pnpaths
 
 # get current protocol node from command line argument
 curr_pn = sys.argv[1]
 # remote path to the folder with the files to be read
-remote_path = rf'\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\networktesting'
+remote_path = pnpaths[int(curr_pn[-1]) - 1]
 
 def read_files_from_directory(directory, individual_read_times):
     elapsed_time = 0

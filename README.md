@@ -18,16 +18,18 @@ networktesting/
       ├── automator.py (automates the running of file transfer and pn shifting between two machines)
       ├── clusteroverib.py (transfers files on cluster over Infiniband connection)
       ├── clusteroverpn.py (transfers files on cluster over SMB connection)
-      ├── control.txt ("lock" file for automator.py, indicates which machine is currently transferring)
+      <!-- ├── control.txt ("lock" file for automator.py, indicates which machine is currently transferring) -->
       ├── data_creation/
       │   ├── 10g.py (sample script to create a 10gb file)
       │   └── 10m.py (sample script to create 10gb worth of 10mb files)
-      └── filetransfer.py (file transfer script over remote SMB connection)
+      ├── filetransfer.py (file transfer script over remote SMB connection)      
+      └── ~secret.py (file with paths and turn order for automator)
 ```
 
 - `README.md`: This file provides an overview of the project and its file structure.
 - `results/`: This directory stores the results of the network testing in CSV format.
 - `scripts/`: This directory contains the scripts used for both the network/storage testing as well as data creation.
+- ~ (Note: `secret.py` is not included in this repository for security reasons. It contains sensitive information and should be created locally as applicable to usage.)
 
 ## Usage
 
