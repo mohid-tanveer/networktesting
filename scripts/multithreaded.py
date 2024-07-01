@@ -44,7 +44,6 @@ def read_files_from_directory_single(directory):
 def read_single_file(file_path):
     file_size = os.path.getsize(file_path)
     temp_start_time = time.time()
-    print(f"Reading file: {file_path}")
     with open(file_path, 'r') as file:
         content = file.read()
     temp_end_time = time.time()
