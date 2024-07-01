@@ -3,6 +3,7 @@ import os
 import time
 import csv
 import socket
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from secret import pnpaths
 
 # Get the host name
@@ -13,32 +14,38 @@ curr_pn = sys.argv[1]
 # remote path to the folder with the files to be read
 remote_path = pnpaths[int(curr_pn[-1]) - 1]
 
+def read_single_file(file_path):
+    file_size = os.path.getsize(file_path)
+    temp_start_time = time.time()
+    print(f"Reading file: {file_path}")
+    with open(file_path, 'r') as file:
+        content = file.read()
+    temp_end_time = time.time()
+    temp_elapsed_time = temp_end_time - temp_start_time
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
+    return (temp_elapsed_time, current_time, file_size, curr_pn)
+
 def read_files_from_directory(directory, individual_read_times):
     elapsed_time = 0
     file_total_size = 0
+    tasks = []
     
-    for root, dirs, files in os.walk(directory):
-        # iterate over all files in the directory
-        # in the case of one file, will only be one iteration
-        for file in files:
-            # get individual file path and read the file
-            file_path = os.path.join(root, file)
-            # get file size and add to total file size
-            file_size = os.path.getsize(file_path)
-            print(file_path, file_size)
-            file_total_size += file_size
-            temp_start_time = time.time()
-            with open(file_path, 'r') as file:
-                content = file.read()
-            temp_end_time = time.time()
-            temp_elapsed_time = temp_end_time - temp_start_time
-            # add the elapsed time to the total elapsed time
-            elapsed_time += temp_elapsed_time
-            # if tracking individual file reads (10 mb files) append data to its list
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        for root, dirs, files in os.walk(directory):
+            # iterate over all files in the directory
+            # in the case of one file, will only be one iteration
+            for file in files:
+                # get individual file path and submit a task to read the file
+                file_path = os.path.join(root, file)
+                tasks.append(executor.submit(read_single_file, file_path))
+        for future in as_completed(tasks):
+            # get the result as a tuple from the future
+            info = future.result()
+            file_total_size += info[2]
+            elapsed_time += info[0]
             if individual_read_times is not None:
-                t = time.localtime()
-                current_time = time.strftime("%H:%M:%S", t)
-                individual_read_times.append((temp_elapsed_time, current_time, file_size, curr_pn))
+                individual_read_times.append(info)
     
     # calculate the transfer speed
     transfer_speed = file_total_size / elapsed_time
