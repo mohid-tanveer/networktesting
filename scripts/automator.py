@@ -1,7 +1,7 @@
 import os
 import time
 import socket
-from networktesting.scripts.secret import cf, sp, turn_order
+from secret import cf, sp, turn_order
 
 round_complete = False
 
