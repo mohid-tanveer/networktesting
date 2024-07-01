@@ -1,16 +1,6 @@
-import sys
 import os
 import time
 import csv
-import socket
-
-# Get the host name
-host_name = socket.gethostname()
-
-# get current protocol node from command line argument
-curr_pn = sys.argv[1]
-# remote path to the folder with the files to be read
-remote_path = rf'\\10.220.9.1{curr_pn[-1]}\informationservices\RI\HPRC\mtanveer\networktesting'
 
 def read_files_from_directory(directory, individual_read_times):
     elapsed_time = 0
@@ -37,7 +27,7 @@ def read_files_from_directory(directory, individual_read_times):
             if individual_read_times is not None:
                 t = time.localtime()
                 current_time = time.strftime("%H:%M:%S", t)
-                individual_read_times.append((temp_elapsed_time, current_time, file_size, curr_pn))
+                individual_read_times.append((temp_elapsed_time, current_time, file_size))
     
     # calculate the transfer speed
     transfer_speed = file_total_size / elapsed_time
@@ -59,42 +49,41 @@ def networktesting(directory_path, store_individual_read_times=False):
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S", t)
         # append the tuple to the read times list
-        read_times.append((time_taken, current_time, file_size, transfer_speed, curr_pn))
+        read_times.append((time_taken, current_time, file_size, transfer_speed))
     # check if a results file exists
-    exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}.csv') else False
+    exists = True if os.path.exists(rf'../results/clusterIB_{folder_name}.csv') else False
     # if result file doesn't exist, create it and write the headers
     if not exists:
-        with open(rf'{remote_path}\results\{host_name}_{folder_name}.csv', mode='w') as file:
+        with open(rf'../results/clusterIB_{folder_name}.csv', mode='w') as file:
             writer = csv.writer(file)
             # if the file did not exist, write the headers
             if not exists: 
-                writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed', 'protocolnode'])
+                writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed'])
     # write the results to a csv file
-    with open(rf'{remote_path}\results\{host_name}_{folder_name}.csv', mode='a') as file:
+    with open(rf'../results/clusterIB_{folder_name}.csv', mode='a') as file:
         writer = csv.writer(file)
         for row in read_times:
             writer.writerow(row)
     # if storing individual read times, write the results to a csv file
     if store_individual_read_times:
-        exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv') else False
+        exists = True if os.path.exists(rf'../results/clusterIB_{folder_name}_individual.csv') else False
         # if result file doesn't exist, create it and write the headers
         if not exists:
-            with open(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='w') as file:
+            with open(rf'../results/clusterIB_{folder_name}_individual.csv', mode='w') as file:
                 writer = csv.writer(file)
                 # if the file did not exist, write the headers
                 if not exists: 
-                    writer.writerow(['time', 'timestamp', 'filesize', 'protocolnode'])
-        with open(rf'{remote_path}\results\{host_name}_{folder_name}_individual.csv', mode='a') as file:
+                    writer.writerow(['time', 'timestamp', 'filesize'])
+        with open(rf'../results/clusterIB_{folder_name}_individual.csv', mode='a') as file:
             writer = csv.writer(file)
             for row in individual_read_times:
                 writer.writerow(row)
 
 def main():
-    print(f"Testing {curr_pn}")
     # test the network transfer speed of the specified directory/directories
     print("testing tengigfile")
-    networktesting(rf'{remote_path}\tengigfile')
+    networktesting(rf'../tengigfile')
     print("testing tenmegfiles")
-    networktesting(rf'{remote_path}\tenmegfiles', True)
+    networktesting(rf'../tenmegfiles', True)
     
 main()
