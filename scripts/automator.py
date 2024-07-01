@@ -8,7 +8,7 @@ round_complete = False
 host_name = socket.gethostname()
 
 # set up protocol node choices
-pn_choices = ['pn001', 'pn002', 'pn003', 'pn004', 'pn005', 'pn006']
+pn_choices = ['pn002', 'pn003', 'pn004', 'pn005', 'pn006', 'pn001']
 
 # control file path
 CONTROL_FILE = rf"\\jude.stjude.org\informationservices\RI\HPRC\mtanveer\networktesting\scripts\control.txt"
