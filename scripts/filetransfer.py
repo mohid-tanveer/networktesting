@@ -30,7 +30,7 @@ def read_files_from_directory(directory, individual_read_times):
     elapsed_time = 0
     file_total_size = 0
     tasks = []
-    
+    start_time = time.time()
     with ThreadPoolExecutor(max_workers=5) as executor:
         for root, dirs, files in os.walk(directory):
             # iterate over all files in the directory
@@ -46,7 +46,8 @@ def read_files_from_directory(directory, individual_read_times):
             elapsed_time += info[0]
             if individual_read_times is not None:
                 individual_read_times.append(info)
-    
+    end_time = time.time()
+    print(f"Total time taken for reading files: {elapsed_time} or {start_time-end_time} seconds")
     # calculate the transfer speed
     transfer_speed = file_total_size / elapsed_time
 
