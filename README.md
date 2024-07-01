@@ -23,6 +23,8 @@ networktesting/
       │   ├── 10g.py (sample script to create a 10gb file)
       │   └── 10m.py (sample script to create 10gb worth of 10mb files)
       ├── filetransfer.py (file transfer script over remote SMB connection)      
+      ├── multiautomator.py (automates the running of m-t file transfer and pn shifting between two machines)    
+      ├── multithreaded.py (multi-threaded file transfer script over remote SMB connection)    
       └── ~secret.py (file with paths and turn order for automator)
 ```
 
