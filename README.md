@@ -38,7 +38,7 @@ networktesting/
 - `results/`: This directory stores the results of the network testing in CSV format.
 - `scatterplotcreation/`: This directory contains the scripts used to produce scatterplots of data collected.
 - `scripts/`: This directory contains the scripts used for both the network/storage testing as well as data creation.
-- ~ (Notes: `control.py` and `secret.py`are not included in this repository for security reasons. They contain sensitive information and should be created locally as applicable to usage.)
+- ~ (Notes: `control.txt` and `secret.py`are not included in this repository for security reasons. They contain sensitive information and should be created locally as applicable to usage.)
 
 ## Usage
 
