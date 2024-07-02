@@ -49,7 +49,7 @@ def networktesting_multi(directory_path):
     time_taken, file_size, transfer_speed = read_files_from_directory_multi(directory_path)
     print(f"Total time taken for multi-threaded {folder_name} test: {time_taken} seconds")
     t = time.localtime()
-    current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
+    current_time = time.strftime("%H:%M:%S", t)
     # append the tuple to the read times list
     multi_read_times.append((time_taken, current_time, file_size, transfer_speed, curr_pn, 'multi'))
     # check if a results file exists

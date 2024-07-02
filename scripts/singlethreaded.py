@@ -50,7 +50,7 @@ def networktesting_single(directory_path):
     time_taken, file_size, transfer_speed = read_files_from_directory_single(directory_path)
     print(f"Total time taken for single-threaded {folder_name} test: {time_taken} seconds")
     t = time.localtime()
-    current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
+    current_time = time.strftime("%H:%M:%S", t)
     # append the tuple to the read times list
     single_read_times.append((time_taken, current_time, file_size, transfer_speed, curr_pn, 'single'))
     # check if a results file exists
