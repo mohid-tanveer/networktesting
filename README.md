@@ -25,6 +25,7 @@ networktesting/
       ├── filetransfer.py (file transfer script over remote SMB connection)      
       ├── multiautomator.py (automates the running of m-t file transfer and pn shifting between two machines)    
       ├── multithreaded.py (multi-threaded file transfer script over remote SMB connection)    
+      ├── multithreadedclusterIB.py (multi-threaded file transfer script over IB connection on cluster)          
       └── ~secret.py (file with paths and turn order for automator)
 ```
 
