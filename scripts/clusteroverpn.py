@@ -33,7 +33,7 @@ def read_files_from_directory(directory, individual_read_times):
             # if tracking individual file reads (10 mb files) append data to its list
             if individual_read_times is not None:
                 t = time.localtime()
-                current_time = time.strftime("%H:%M:%S", t)
+                current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
                 individual_read_times.append((temp_elapsed_time, current_time, file_size))
     
     # calculate the transfer speed
@@ -54,7 +54,7 @@ def networktesting(directory_path, store_individual_read_times=False):
         time_taken, file_size, transfer_speed, individual_read_times = read_files_from_directory(directory_path, individual_read_times)
         print(f"Total time taken for {folder_name} test {i}: {time_taken} seconds")
         t = time.localtime()
-        current_time = time.strftime("%H:%M:%S", t)
+        current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
         # append the tuple to the read times list
         read_times.append((time_taken, current_time, file_size, transfer_speed))
     # check if a results file exists
