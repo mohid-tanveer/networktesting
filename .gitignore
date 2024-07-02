@@ -163,3 +163,5 @@ cython_debug/
 
 # Additional
 /scripts/secret.py
+/scatterplotcreation/output
+/.vscode

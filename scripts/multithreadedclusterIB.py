@@ -11,7 +11,6 @@ def read_single_file(file_path):
 
 def read_files_from_directory_multi(directory):
     elapsed_time = 0
-    file_total_size = 10737418240
     tasks = []
     start_time = time.time()
     with ThreadPoolExecutor(max_workers=5) as executor:
@@ -24,10 +23,10 @@ def read_files_from_directory_multi(directory):
                 tasks.append(executor.submit(read_single_file, file_path))
     end_time = time.time()
     elapsed_time = end_time - start_time
-    # calculate the transfer speed
-    transfer_speed = file_total_size / elapsed_time
+    # calculate the transfer speed in MB/s
+    transfer_speed = (10737418240 / elapsed_time) / 1000000
 
-    return elapsed_time, file_total_size, transfer_speed
+    return elapsed_time, transfer_speed
 
 def networktesting(directory_path):
     # init the list to store the read times tuples
@@ -37,12 +36,12 @@ def networktesting(directory_path):
     # iterate over the directory 3 times
     for i in range(1, 4):
         # read files from directory and get the time taken, file size and transfer speed
-        time_taken, file_size, transfer_speed = read_files_from_directory_multi(directory_path)
+        time_taken, transfer_speed = read_files_from_directory_multi(directory_path)
         print(f"Total time taken for {folder_name} test {i}: {time_taken} seconds")
         t = time.localtime()
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
         # append the tuple to the read times list
-        read_times.append((time_taken, current_time, file_size, transfer_speed))
+        read_times.append((time_taken, current_time, transfer_speed))
     # check if a results file exists
     exists = True if os.path.exists(rf'../results/clusterIB_{folder_name}_multi.csv') else False
     # if result file doesn't exist, create it and write the headers
@@ -51,7 +50,7 @@ def networktesting(directory_path):
             writer = csv.writer(file)
             # if the file did not exist, write the headers
             if not exists: 
-                writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed'])
+                writer.writerow(['time', 'timestamp', 'transferspeed'])
     # write the results to a csv file
     with open(rf'../results/clusterIB_{folder_name}_multi.csv', mode='a') as file:
         writer = csv.writer(file)

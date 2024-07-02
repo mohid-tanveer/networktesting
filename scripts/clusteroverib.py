@@ -2,9 +2,8 @@ import os
 import time
 import csv
 
-def read_files_from_directory(directory, individual_read_times):
+def read_files_from_directory(directory):
     elapsed_time = 0
-    file_total_size = 0
     
     for root, dirs, files in os.walk(directory):
         # iterate over all files in the directory
@@ -12,10 +11,7 @@ def read_files_from_directory(directory, individual_read_times):
         for file in files:
             # get individual file path and read the file
             file_path = os.path.join(root, file)
-            # get file size and add to total file size
-            file_size = os.path.getsize(file_path)
-            print(file_path, file_size)
-            file_total_size += file_size
+            print(f"Reading file: {file_path}")
             temp_start_time = time.time()
             with open(file_path, 'r') as file:
                 content = file.read()
@@ -23,33 +19,26 @@ def read_files_from_directory(directory, individual_read_times):
             temp_elapsed_time = temp_end_time - temp_start_time
             # add the elapsed time to the total elapsed time
             elapsed_time += temp_elapsed_time
-            # if tracking individual file reads (10 mb files) append data to its list
-            if individual_read_times is not None:
-                t = time.localtime()
-                current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
-                individual_read_times.append((temp_elapsed_time, current_time, file_size))
     
-    # calculate the transfer speed
-    transfer_speed = file_total_size / elapsed_time
+    # calculate the transfer speed in MB/s
+    transfer_speed = (10737418240 / elapsed_time) / 1000000
 
-    return elapsed_time, file_total_size, transfer_speed, individual_read_times
+    return elapsed_time, transfer_speed
 
-def networktesting(directory_path, store_individual_read_times=False):
+def networktesting(directory_path):
     # init the list to store the read times tuples
     read_times = []
-    # if storing individual read times, init the list
-    individual_read_times = [] if store_individual_read_times else None
     # get the folder name
     folder_name =  os.path.basename(directory_path)
     # iterate over the directory 3 times
     for i in range(1, 4):
         # read files from directory and get the time taken, file size and transfer speed
-        time_taken, file_size, transfer_speed, individual_read_times = read_files_from_directory(directory_path, individual_read_times)
+        time_taken, transfer_speed = read_files_from_directory(directory_path)
         print(f"Total time taken for {folder_name} test {i}: {time_taken} seconds")
         t = time.localtime()
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
         # append the tuple to the read times list
-        read_times.append((time_taken, current_time, file_size, transfer_speed))
+        read_times.append((time_taken, current_time, transfer_speed))
     # check if a results file exists
     exists = True if os.path.exists(rf'../results/clusterIB_{folder_name}.csv') else False
     # if result file doesn't exist, create it and write the headers
@@ -58,32 +47,18 @@ def networktesting(directory_path, store_individual_read_times=False):
             writer = csv.writer(file)
             # if the file did not exist, write the headers
             if not exists: 
-                writer.writerow(['time', 'timestamp', 'filesize', 'transferspeed'])
+                writer.writerow(['time', 'timestamp', 'transferspeed'])
     # write the results to a csv file
     with open(rf'../results/clusterIB_{folder_name}.csv', mode='a') as file:
         writer = csv.writer(file)
         for row in read_times:
             writer.writerow(row)
-    # if storing individual read times, write the results to a csv file
-    if store_individual_read_times:
-        exists = True if os.path.exists(rf'../results/clusterIB_{folder_name}_individual.csv') else False
-        # if result file doesn't exist, create it and write the headers
-        if not exists:
-            with open(rf'../results/clusterIB_{folder_name}_individual.csv', mode='w') as file:
-                writer = csv.writer(file)
-                # if the file did not exist, write the headers
-                if not exists: 
-                    writer.writerow(['time', 'timestamp', 'filesize'])
-        with open(rf'../results/clusterIB_{folder_name}_individual.csv', mode='a') as file:
-            writer = csv.writer(file)
-            for row in individual_read_times:
-                writer.writerow(row)
 
 def main():
     # test the network transfer speed of the specified directory/directories
     print("testing tengigfile")
     networktesting(rf'../tengigfile')
     print("testing tenmegfiles")
-    networktesting(rf'../tenmegfiles', True)
+    networktesting(rf'../tenmegfiles')
     
 main()
