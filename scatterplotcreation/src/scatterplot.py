@@ -12,9 +12,11 @@ protocol_colors = {
 }
 
 file_path = sys.argv[1]
+machine = file_path.split(".")[0]
 data = excel_to_dict(file_path)
 for day in data:
     day['timestamp'] = pd.to_datetime(day['timestamp'], format='%m/%d/%y %I:%M %p')
+    day_text = day['timestamp'][0].strftime('%m-%d-%y')
     df = pd.DataFrame(day)
 
     # Separate data for 10 GB and 10 MB transfers
@@ -39,7 +41,7 @@ for day in data:
     # Adding labels and legend for transfer sizes
     plt.xlabel('Timestamp')
     plt.ylabel('Transfer Speed (MB/s)')
-    plt.title('Transfer Speed over Time')
+    plt.title(f'{machine} File Transfers on {day_text}')
     size_legend = plt.legend(title="Transfer Size", loc='upper left', bbox_to_anchor=(1.05, 1), borderaxespad=0.)
 
     # Create custom patches for the protocol node legend
@@ -62,7 +64,6 @@ for day in data:
     plt.tight_layout(rect=[0, 0, 0.85, 1])  # Adjust the rect parameter to make space for the legend
 
     # Before displaying the plot, save it as a PDF
-    day_text = day['timestamp'][0].strftime('%m-%d-%y')
-    plt.savefig(f'../output/Scatterplot - {file_path.split('.')[0]} {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+    plt.savefig(f'../output/Scatterplot - {machine} {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
     # Display the plot
     plt.show()
