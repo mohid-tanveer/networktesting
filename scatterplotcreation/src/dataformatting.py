@@ -1,20 +1,20 @@
 import pandas as pd
 
 def excel_to_dict(file_path):
-    # Read the Excel file
+    # read excel file into a DataFrame
     df = pd.read_excel(file_path)
-
-    # Convert the DataFrame to a dictionary
+    # convert the DataFrame to a dictionary
     data_dict = df.to_dict(orient='records')
+    # init data list
     data = []
-    # Divide the data into groups of 3 averaging the timestamp and transferspeed
+    # divide the data into groups of 3 averaging the timestamp and transferspeed
+    # represents one run of the networktesting function
     for i in range(0, len(data_dict), 3):
-        # Ensure all timestamps are converted to datetime objects before averaging
+        # average the timestamp and transferspeed
         timestamp = pd.to_datetime([d['timestamp'] for d in data_dict[i:i+3]]).mean()
         transferspeed = sum(d['transferspeed'] for d in data_dict[i:i+3]) / 3
         protocolnode = data_dict[i]['protocolnode']
         Type = data_dict[i]['Type']
-        # Convert timestamp to the desired format right away
         data.append({'timestamp': timestamp.strftime('%-m/%-d/%y %-I:%M %p'), 'transferspeed (MB/s)': transferspeed,
                      'protocolnode': protocolnode, 'Type': Type})
     
@@ -33,6 +33,7 @@ def excel_to_dict(file_path):
     if current_partition:
         partitioned_data.append(current_partition)
     
+    # format the partitioned data
     for i in range(len(partitioned_data)):
         formatted_data = {
             'timestamp': [d['timestamp'] for d in partitioned_data[i]],
@@ -41,5 +42,6 @@ def excel_to_dict(file_path):
             'Type': [d['Type'] for d in partitioned_data[i]]
         }
         partitioned_data[i] = formatted_data
+        
     return partitioned_data
 
