@@ -4,13 +4,10 @@ from secret import sp2, sp3
 
 round_complete = False
 
-# get the host name
-host_name = socket.gethostname()
-
 # set up protocol node choices
 pn_choices = ['pn001', 'pn002', 'pn003', 'pn004', 'pn005', 'pn006']
 
-# local script path (./filetransfer.py)
+# local script path (./multithreaded.py)
 SCRIPT_PATH = sp2
 SCRIPT_PATH2 = sp3
 

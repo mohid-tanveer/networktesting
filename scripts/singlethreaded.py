@@ -4,10 +4,11 @@ import time
 import csv
 import socket
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from secret import pnpaths
+from secret import pnpaths, locations
 
-# Get the host name
+# Get the host name and location
 host_name = socket.gethostname()
+location = locations[host_name]
 
 # get current protocol node from command line argument
 curr_pn = sys.argv[1]
@@ -48,18 +49,18 @@ def networktesting_single(directory_path):
     t = time.localtime()
     current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
     # append the tuple to the read times list
-    single_read_times.append((time_taken, current_time, transfer_speed, curr_pn, 'single'))
+    single_read_times.append((current_time, transfer_speed, curr_pn, 'single'))
     # check if a results file exists
-    exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}.csv') else False
+    exists = True if os.path.exists(rf'{remote_path}\results\{host_name} ({location}) multithreaded.csv') else False
     # if result file doesn't exist, create it and write the headers
     if not exists:
-        with open(rf'{remote_path}\results\{host_name}_{folder_name}_multi.csv', mode='w') as file:
+        with open(rf'{remote_path}\results\{host_name} ({location}) multithreaded.csv', mode='w') as file:
             writer = csv.writer(file)
             # if the file did not exist, write the headers
             if not exists: 
-                writer.writerow(['time', 'timestamp', 'transferspeed', 'protocolnode', 'threadtype'])
+                writer.writerow(['timestamp', 'transferspeed', 'protocolnode', 'threadtype'])
     # write the results to a csv file
-    with open(rf'{remote_path}\results\{host_name}_{folder_name}_multi.csv', mode='a') as file:
+    with open(rf'{remote_path}\results\{host_name} ({location}) multithreaded.csv', mode='a') as file:
         writer = csv.writer(file)
         for row in single_read_times:
             writer.writerow(row)

@@ -4,7 +4,11 @@ import time
 import csv
 import socket
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from secret import pnpaths
+from secret import pnpaths, locations
+
+# Get the host name and location
+host_name = socket.gethostname()
+location = locations[host_name]
 
 # Get the host name
 host_name = socket.gethostname()
@@ -45,23 +49,23 @@ def networktesting_multi(directory_path):
     folder_name =  os.path.basename(directory_path)
     # read files from directory and get the time taken, file size and transfer speed
     # multi-threaded
-    time_taken, file_size, transfer_speed = read_files_from_directory_multi(directory_path)
+    time_taken, transfer_speed = read_files_from_directory_multi(directory_path)
     print(f"Total time taken for multi-threaded {folder_name} test: {time_taken} seconds")
     t = time.localtime()
     current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
     # append the tuple to the read times list
-    multi_read_times.append((time_taken, current_time, transfer_speed, curr_pn, 'multi'))
+    multi_read_times.append((current_time, transfer_speed, curr_pn, 'multi'))
     # check if a results file exists
-    exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}.csv') else False
+    exists = True if os.path.exists(rf'{remote_path}\results\{host_name} ({location}) multithreaded.csv') else False
     # if result file doesn't exist, create it and write the headers
     if not exists:
-        with open(rf'{remote_path}\results\{host_name}_{folder_name}_multi.csv', mode='w') as file:
+        with open(rf'{remote_path}\results\{host_name} ({location}) multithreaded.csv', mode='w') as file:
             writer = csv.writer(file)
             # if the file did not exist, write the headers
             if not exists: 
-                writer.writerow(['time', 'timestamp', 'transferspeed', 'protocolnode', 'threadtype'])
+                writer.writerow(['timestamp', 'transferspeed', 'protocolnode', 'threadtype'])
     # write the results to a csv file
-    with open(rf'{remote_path}\results\{host_name}_{folder_name}_multi.csv', mode='a') as file:
+    with open(rf'{remote_path}\results\{host_name} ({location}) multithreaded.csv', mode='a') as file:
         writer = csv.writer(file)
         for row in multi_read_times:
             writer.writerow(row)

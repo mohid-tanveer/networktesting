@@ -10,9 +10,7 @@ The file structure of this repository is as follows:
 networktesting/
 ├── README.md
 ├── results/
-│   ├── mtanveer_tengigfile.csv (sample output file storing results from folder 'tengigfile' to host mtanveer)
-│   ├── mtanveer_tenmegfiles.csv (sample output file storing results from folder 'tenmegfiles' to host mtanveer)
-│   └── mtanveer_tenmegfiles_individual.csv (same as above for individual files being transferred from the folder)
+│   ├── mtanveer (DataCenter).csv (sample output file storing results from file transfers to host mtanveer in location DataCenter)
 ├── scatterplotcreation/
 │   ├── requirements.txt
 │   └── src
@@ -28,10 +26,12 @@ networktesting/
       │   └── 10m.py (sample script to create 10gb worth of 10mb files)
       ├── filetransfer.py (file transfer script over remote SMB connection)      
       ├── multiautomator.py (automates the running of m-t file transfer and pn shifting between two machines)    
+      ├── multiclusterautomator.py (automates the running of m-t file transfer on the cluster over IB)   
       ├── multithreaded.py (multi-threaded file transfer script over remote SMB connection)    
       ├── multithreadedclusterIB.py (multi-threaded file transfer script over IB connection on cluster)          
       ├── ~secret.py (file with paths and turn order for automator)
-      └── singlethreaded.py (single-threaded file transfer for multithreaded test script)
+      ├── singlethreaded.py (single-threaded file transfer for multithreaded test script)
+      └── singlethreadedclusterIB.py (single-threaded file transfer for multithreaded cluster test script)
 ```
 
 - `README.md`: This file provides an overview of the project and its file structure.

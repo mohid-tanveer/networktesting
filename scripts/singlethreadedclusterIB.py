@@ -26,8 +26,6 @@ def read_files_from_directory(directory):
     return elapsed_time, transfer_speed
 
 def networktesting(directory_path):
-    # declare the type of file being read
-    type = '10 GB' if 'tengigfile' in directory_path else '10 MB'
     # init the list to store the read times tuples
     read_times = []
     # get the folder name
@@ -40,26 +38,24 @@ def networktesting(directory_path):
         t = time.localtime()
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
         # append the tuple to the read times list
-        read_times.append((current_time, transfer_speed, type))
+        read_times.append((current_time, transfer_speed, 'single'))
     # check if a results file exists
-    exists = True if os.path.exists(rf'../results/clusterIB.csv') else False
+    exists = True if os.path.exists(rf'../results/clusterIB multithreaded.csv') else False
     # if result file doesn't exist, create it and write the headers
     if not exists:
-        with open(rf'../results/clusterIB.csv', mode='w') as file:
+        with open(rf'../results/clusterIB multithreaded.csv', mode='w') as file:
             writer = csv.writer(file)
             # if the file did not exist, write the headers
             if not exists: 
-                writer.writerow(['timestamp', 'transferspeed', 'type'])
+                writer.writerow(['timestamp', 'transferspeed', 'threadtype'])
     # write the results to a csv file
-    with open(rf'../results/clusterIB.csv', mode='a') as file:
+    with open(rf'../results/clusterIB multithreaded.csv', mode='a') as file:
         writer = csv.writer(file)
         for row in read_times:
             writer.writerow(row)
 
 def main():
     # test the network transfer speed of the specified directory/directories
-    print("testing tengigfile")
-    networktesting(rf'../tengigfile')
     print("testing tenmegfiles")
     networktesting(rf'../tenmegfiles')
     

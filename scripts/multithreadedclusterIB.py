@@ -41,18 +41,18 @@ def networktesting(directory_path):
         t = time.localtime()
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
         # append the tuple to the read times list
-        read_times.append((time_taken, current_time, transfer_speed))
+        read_times.append((current_time, transfer_speed, 'multi'))
     # check if a results file exists
-    exists = True if os.path.exists(rf'../results/clusterIB_{folder_name}_multi.csv') else False
+    exists = True if os.path.exists(rf'../results/clusterIB multithreaded.csv') else False
     # if result file doesn't exist, create it and write the headers
     if not exists:
-        with open(rf'../results/clusterIB_{folder_name}_multi.csv', mode='w') as file:
+        with open(rf'../results/clusterIB multithreaded.csv', mode='w') as file:
             writer = csv.writer(file)
             # if the file did not exist, write the headers
             if not exists: 
-                writer.writerow(['time', 'timestamp', 'transferspeed'])
+                writer.writerow(['timestamp', 'transferspeed', 'threadtype'])
     # write the results to a csv file
-    with open(rf'../results/clusterIB_{folder_name}_multi.csv', mode='a') as file:
+    with open(rf'../results/clusterIB multithreaded.csv', mode='a') as file:
         writer = csv.writer(file)
         for row in read_times:
             writer.writerow(row)

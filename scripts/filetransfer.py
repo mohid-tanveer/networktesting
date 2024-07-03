@@ -3,10 +3,11 @@ import os
 import time
 import csv
 import socket
-from secret import pnpaths
+from secret import pnpaths, locations
 
-# Get the host name
+# Get the host name and location
 host_name = socket.gethostname()
+location = locations[host_name]
 
 # get current protocol node from command line argument
 curr_pn = sys.argv[1]
@@ -37,6 +38,8 @@ def read_files_from_directory(directory):
     return elapsed_time, transfer_speed
 
 def networktesting(directory_path):
+    # declare the type of file being read
+    type = '10 GB' if 'tengigfile' in directory_path else '10 MB'
     # init the list to store the read times tuples
     read_times = []
     # get the folder name
@@ -49,18 +52,18 @@ def networktesting(directory_path):
         t = time.localtime()
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
         # append the tuple to the read times list
-        read_times.append((time_taken, current_time, transfer_speed, curr_pn))
+        read_times.append((current_time, transfer_speed, curr_pn, type))
     # check if a results file exists
-    exists = True if os.path.exists(rf'{remote_path}\results\{host_name}_{folder_name}.csv') else False
+    exists = True if os.path.exists(rf'{remote_path}\results\{host_name} ({location}).csv') else False
     # if result file doesn't exist, create it and write the headers
     if not exists:
-        with open(rf'{remote_path}\results\{host_name}_{folder_name}.csv', mode='w') as file:
+        with open(rf'{remote_path}\results\{host_name} ({location}).csv', mode='w') as file:
             writer = csv.writer(file)
             # if the file did not exist, write the headers
             if not exists: 
-                writer.writerow(['time', 'timestamp', 'transferspeed', 'protocolnode'])
+                writer.writerow(['timestamp', 'transferspeed', 'protocolnode', 'type'])
     # write the results to a csv file
-    with open(rf'{remote_path}\results\{host_name}_{folder_name}.csv', mode='a') as file:
+    with open(rf'{remote_path}\results\{host_name} ({location}).csv', mode='a') as file:
         writer = csv.writer(file)
         for row in read_times:
             writer.writerow(row)
