@@ -21,7 +21,7 @@ SCRIPT_PATH2 = sp3
 # on exit update scatter-plots with any new data
 def on_exit():
     print("Updating relevant scatterplots...")
-    subprocess.run([rf"python3 ..\scatterplotcreation\src\scatterplot.py ..\results\{host}\ ({location})\ multithreaded.csv"], shell=True)
+    os.system(rf"python3 ..\scatterplotcreation\src\scatterplot.py ..\results\{host}\ ({location})\ multithreaded.csv")
 
 # register on_exit function to run on exit
 atexit.register(on_exit)

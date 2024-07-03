@@ -5,7 +5,6 @@ import signal
 import time
 import socket
 from secret import cf, sp, turn_order, locations
-import subprocess
 
 host = socket.gethostname()
 location = locations[host]
@@ -26,7 +25,7 @@ SCRIPT_PATH = sp
 # on exit update scatter-plots with any new data
 def on_exit():
     print("Updating relevant scatterplots...")
-    subprocess.run([rf"python3 ..\scatterplotcreation\src\scatterplot.py ..\results\{host}\ ({location}).csv"], shell=True)
+    os.system(rf"python3 ..\scatterplotcreation\src\scatterplot.py ..\results\{host}\ ({location}).csv")
 
 # register on_exit function to run on exit
 atexit.register(on_exit)

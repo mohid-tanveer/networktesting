@@ -14,7 +14,7 @@ SCRIPT_PATH2 = sp5
 # on exit update scatter-plots with any new data
 def on_exit():
     print("Updating relevant scatterplots...")
-    os.system([f"python3 ../scatterplotcreation/src/scatterplot.py ../results/clusterIB multithreaded.csv"])
+    os.system([f"python3 ../scatterplotcreation/src/scatterplot.py ../results/clusterIB\ multithreaded.csv"])
 
 
 # register on_exit function to run on exit
