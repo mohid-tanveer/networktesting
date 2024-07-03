@@ -4,7 +4,6 @@ import csv
 from concurrent.futures import ThreadPoolExecutor
 
 def read_single_file(file_path):
-    print(f"Reading file: {file_path}")
     with open(file_path, 'r') as file:
         content = file.read()
     return 

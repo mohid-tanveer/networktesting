@@ -17,8 +17,7 @@ def read_files_from_directory(directory):
         # in the case of one file, will only be one iteration
         for file in files:
             # get individual file path and read the file
-            file_path = os.path.join(root, file)
-            print(f"Reading file: {file_path}")
+            file_path = os.path.join(root, file)            
             temp_start_time = time.time()
             with open(file_path, 'r') as file:
                 content = file.read()

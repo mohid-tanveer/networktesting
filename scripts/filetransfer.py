@@ -23,7 +23,6 @@ def read_files_from_directory(directory):
         for file in files:
             # get individual file path and read the file
             file_path = os.path.join(root, file)
-            print(f"Reading file: {file_path}")
             with open(file_path, 'r') as file:
                 temp_start_time = time.time()
                 content = file.read()

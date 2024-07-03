@@ -3,13 +3,8 @@ import sys
 import atexit
 import signal
 import socket
-from secret import sp4, sp5
 
 round_complete = False
-
-# local script path (./multithreadedclusterIB.py)
-SCRIPT_PATH = sp4
-SCRIPT_PATH2 = sp5
 
 # on exit update scatter-plots with any new data
 def on_exit():
@@ -30,6 +25,6 @@ signal.signal(signal.SIGTERM, signal_handler)
 # check and run loop
 while True:
     print(f"Running single threaded script")
-    os.system(f"python {SCRIPT_PATH2}")
+    os.system(f"python multithreadedclusterIB.py")
     print(f"Running multi threaded script")
-    os.system(f"python {SCRIPT_PATH}")
+    os.system(f"python singlethreadedclusterIB.py")
