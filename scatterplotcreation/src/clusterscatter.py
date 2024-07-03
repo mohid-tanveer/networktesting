@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from matplotlib.patches import Patch
 import matplotlib.dates as mdates
-from dataformatting import csv_to_dict, multi_csv_to_dict
+from dataformatting import multi_csv_to_dict
 
 # define protocol node colors
 protocol_colors = {
@@ -21,9 +21,7 @@ machine = file_path.split(".")[0].split("/")[-1]
 # type: [type values] or threadtype: [threadtype values],
 # transferspeed_MB/s: [transferspeed_MB/s values], 
 # protocolnode: [protocolnode values]}
-non_multi = True if 'multithreaded' not in file_path else False
-data = csv_to_dict(file_path) if non_multi else multi_csv_to_dict(file_path)
-
+data = csv_to_dict(file_path)
 # iterate over each day's data
 for day in data:
     # format the data into a DataFrame
@@ -32,14 +30,9 @@ for day in data:
     # get the day in plain text
     day_text = day['timestamp'][0].strftime('%m-%d-%y')
 
-    if non_multi:
-        # isolate 10 GB and 10 MB data
-        gb_data = df[df['type'] == '10 GB']
-        mb_data = df[df['type'] == '10 MB']
-    else:
-        # isolate multithreaded and singlethreaded data
-        multi_data = df[df['threadtype'] == 'multi']
-        single_data = df[df['threadtype'] == 'single']
+    # isolate 10 GB and 10 MB data
+    gb_data = df[df['type'] == '10 GB']
+    mb_data = df[df['type'] == '10 MB']
 
     ### plotting
 

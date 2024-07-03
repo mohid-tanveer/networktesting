@@ -24,10 +24,10 @@ def read_files_from_directory(directory):
             # get individual file path and read the file
             file_path = os.path.join(root, file)
             print(f"Reading file: {file_path}")
-            temp_start_time = time.time()
             with open(file_path, 'r') as file:
+                temp_start_time = time.time()
                 content = file.read()
-            temp_end_time = time.time()
+                temp_end_time = time.time()
             temp_elapsed_time = temp_end_time - temp_start_time
             # add the elapsed time to the total elapsed time
             elapsed_time += temp_elapsed_time

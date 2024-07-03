@@ -13,7 +13,8 @@ networktesting/
 │   ├── mtanveer (DataCenter).csv (sample output file storing results from file transfers to host mtanveer in location DataCenter)
 ├── scatterplotcreation/
 │   ├── requirements.txt
-│   └── src
+│   └── output/ (folder to hold PDFs produced)
+│   └── src/
 │       ├── dataformatting.py (format excel data for scatterplotting)
 │       └── scatterplot.py (produce scatterplots per machine partitioned by day)
 └── scripts/

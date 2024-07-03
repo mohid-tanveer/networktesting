@@ -1,4 +1,7 @@
 import os
+import sys
+import atexit
+import signal
 import time
 import socket
 from secret import cf, sp, turn_order
@@ -16,6 +19,20 @@ CONTROL_FILE = cf
 
 # local script path (./filetransfer.py)
 SCRIPT_PATH = sp
+
+# on exit update scatter-plots with any new data
+def on_exit():
+    print("Updating relevant scatterplots...")
+
+# register on_exit function to run on exit
+atexit.register(on_exit)
+
+def signal_handler(signum, frame):
+    on_exit()
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
 
 # check if it's this machine's turn to run the script
 def check_turn():

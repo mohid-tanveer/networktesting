@@ -1,4 +1,7 @@
 import os
+import sys
+import atexit
+import signal
 import socket
 from secret import sp2, sp3
 
@@ -10,6 +13,20 @@ pn_choices = ['pn001', 'pn002', 'pn003', 'pn004', 'pn005', 'pn006']
 # local script path (./multithreaded.py)
 SCRIPT_PATH = sp2
 SCRIPT_PATH2 = sp3
+
+# on exit update scatter-plots with any new data
+def on_exit():
+    print("Updating relevant scatterplots...")
+
+# register on_exit function to run on exit
+atexit.register(on_exit)
+
+def signal_handler(signum, frame):
+    on_exit()
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
 
 # check and run loop
 while True:
