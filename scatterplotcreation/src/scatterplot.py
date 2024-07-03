@@ -49,23 +49,39 @@ for day in data:
     fig_width = 10 + time_range_hours * 2
     plt.figure(figsize=(fig_width, 8)) 
 
-    # scatter plot for 10 GB transfers with square markers mapping color to protocol node
-    plt.scatter(gb_data['timestamp'], gb_data['transferspeed_MB/s'], s=100, c=gb_data['protocolnode'].map(protocol_colors), marker='s', label='10 GB')
+    if non_multi:
+        # scatter plot for 10 GB transfers with square markers mapping color to protocol node
+        plt.scatter(gb_data['timestamp'], gb_data['transferspeed_MB/s'], s=100, c=gb_data['protocolnode'].map(protocol_colors), marker='s', label='10 GB')
 
-    # scatter plot for 10 MB transfers with circle markers mapping color to protocol node
-    plt.scatter(mb_data['timestamp'], mb_data['transferspeed_MB/s'], s=100, c=mb_data['protocolnode'].map(protocol_colors), marker='o', label='10 MB')
+        # scatter plot for 10 MB transfers with circle markers mapping color to protocol node
+        plt.scatter(mb_data['timestamp'], mb_data['transferspeed_MB/s'], s=100, c=mb_data['protocolnode'].map(protocol_colors), marker='o', label='10 MB')
+    else:
+        # scatter plot for multithreaded transfers with square markers mapping color to protocol node
+        plt.scatter(multi_data['timestamp'], multi_data['transferspeed_MB/s'], s=100, c=multi_data['protocolnode'].map(protocol_colors), marker='s', label='Multithreaded')
+
+        # scatter plot for singlethreaded transfers with circle markers mapping color to protocol node
+        plt.scatter(single_data['timestamp'], single_data['transferspeed_MB/s'], s=100, c=single_data['protocolnode'].map(protocol_colors), marker='o', label='Singlethreaded')
 
     # add labels and title
     plt.xlabel('Timestamp')
     plt.ylabel('Transfer Speed (MB/s)')
-    plt.title(f'{machine} File Transfers on {day_text}')
+    if non_multi:
+        plt.title(f'{machine} File Transfers on {day_text}')
+    else:
+        plt.title(f'{machine} Multithreaded File Transfers on {day_text}')
 
     # create legend for transfer size and protocol nodes
-    size_legend = plt.legend(title="Transfer Size", loc='upper left', bbox_to_anchor=(1.05, 1), borderaxespad=0.)
+    if non_multi:
+        size_legend = plt.legend(title="Transfer Size", loc='upper left', bbox_to_anchor=(1.05, 1), borderaxespad=0.)
+    else:
+        thread_legend = plt.legend(title="Thread Type", loc='upper left', bbox_to_anchor=(1.05, 1), borderaxespad=0.)
     protocol_patches = [Patch(color=color, label=protocol) for protocol, color in protocol_colors.items()]
     # add the transfer size and protocol node legends to the plot
     plt.legend(handles=protocol_patches, title="Protocol Nodes", loc='upper right', bbox_to_anchor=(1.15, 0.85), borderaxespad=0.)
-    plt.gca().add_artist(size_legend)
+    if non_multi:
+        plt.gca().add_artist(size_legend)
+    else:
+        plt.gca().add_artist(thread_legend)
 
     # format x axis to show date and time in 30 minute intervals
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d %I:%M %p'))
@@ -78,6 +94,10 @@ for day in data:
     plt.ylim(transferspeed_array.min() - 50, transferspeed_array.max() + 50)
 
     # save plot as PDF
-    plt.savefig(f'../output/Scatterplot - {machine} {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+    if non_multi:
+        plt.savefig(f'../output/Scatterplot - {machine} {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+    else:
+        plt.savefig(f'../output/Scatterplot - {machine} Multithreaded {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+    
     # display interactive plot
     plt.show()
