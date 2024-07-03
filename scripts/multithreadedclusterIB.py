@@ -36,7 +36,7 @@ def networktesting(directory_path):
     for i in range(1, 4):
         # read files from directory and get the time taken, file size and transfer speed
         time_taken, transfer_speed = read_files_from_directory_multi(directory_path)
-        print(f"Total time taken for {folder_name} test {i}: {time_taken} seconds")
+        print(f"Total time taken for multithreaded {folder_name} test {i}: {time_taken} seconds")
         t = time.localtime()
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", t)
         # append the tuple to the read times list

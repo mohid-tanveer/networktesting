@@ -2,7 +2,6 @@ import os
 import sys
 import atexit
 import signal
-import socket
 
 round_complete = False
 
@@ -25,6 +24,6 @@ signal.signal(signal.SIGTERM, signal_handler)
 # check and run loop
 while True:
     print(f"Running single threaded script")
-    os.system(f"python multithreadedclusterIB.py")
-    print(f"Running multi threaded script")
     os.system(f"python singlethreadedclusterIB.py")
+    print(f"Running multi threaded script")
+    os.system(f"python multithreadedclusterIB.py")
