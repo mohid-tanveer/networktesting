@@ -1,44 +1,33 @@
 import os
 import sys
-import atexit
-import signal
 import socket
 from secret import sp2, sp3, locations
-import subprocess
 
-host = socket.gethostname()
-location = locations[host]
-
-round_complete = False
+host_name = socket.gethostname()
+location = locations[host_name]
 
 # set up protocol node choices
 pn_choices = ['pn001', 'pn002', 'pn003', 'pn004', 'pn005', 'pn006']
 
-# local script path (./multithreaded.py)
+# local script path (./singlethreaded.py and ,/multithreaded.py)
 SCRIPT_PATH = sp2
 SCRIPT_PATH2 = sp3
 
 # on exit update scatter-plots with any new data
 def on_exit():
     print("Updating relevant scatterplots...")
-    os.system(rf"python3 ..\scatterplotcreation\src\scatterplot.py ..\results\{host}\ ({location})\ multithreaded.csv")
-
-# register on_exit function to run on exit
-atexit.register(on_exit)
-
-def signal_handler(signum, frame):
-    on_exit()
-    sys.exit(0)
-
-signal.signal(signal.SIGINT, signal_handler)
-signal.signal(signal.SIGTERM, signal_handler)
+    os.system(rf'python3 ..\scatterplotcreation\src\scatterplot.py ..\results\"{host_name} ({location}) multithreaded.csv"')
 
 # check and run loop
 while True:
-    # alternate between protocol nodes
-    for pn in pn_choices:
-        print(f"Running single threaded script")
-        arg = pn
-        os.system(f"python {SCRIPT_PATH2} {arg}")
-        print(f"Running multi threaded script")
-        os.system(f"python {SCRIPT_PATH} {arg}")
+    try:
+        # alternate between protocol nodes
+        for pn in pn_choices:
+            arg = pn
+            print(f"Running single threaded script")
+            os.system(f"python {SCRIPT_PATH2} {arg}")
+            print(f"Running multi threaded script")
+            os.system(f"python {SCRIPT_PATH} {arg}")
+    except KeyboardInterrupt:
+        on_exit()
+        sys.exit(0)

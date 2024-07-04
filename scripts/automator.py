@@ -1,17 +1,14 @@
 import os
 import sys
-import atexit
-import signal
 import time
 import socket
 from secret import cf, sp, turn_order, locations
 
-host = socket.gethostname()
-location = locations[host]
-round_complete = False
 
 # get the host name
 host_name = socket.gethostname()
+location = locations[host_name]
+round_complete = False
 
 # set up protocol node choices
 pn_choices = ['pn001', 'pn002', 'pn003', 'pn004', 'pn005', 'pn006']
@@ -25,17 +22,7 @@ SCRIPT_PATH = sp
 # on exit update scatter-plots with any new data
 def on_exit():
     print("Updating relevant scatterplots...")
-    os.system(rf"python3 ..\scatterplotcreation\src\scatterplot.py ..\results\{host}\ ({location}).csv")
-
-# register on_exit function to run on exit
-atexit.register(on_exit)
-
-def signal_handler(signum, frame):
-    on_exit()
-    sys.exit(0)
-
-signal.signal(signal.SIGINT, signal_handler)
-signal.signal(signal.SIGTERM, signal_handler)
+    os.system(rf'python3 ..\scatterplotcreation\src\scatterplot.py ..\results\"{host_name} ({location}).csv"')
 
 # check if it's this machine's turn to run the script
 def check_turn():
@@ -51,20 +38,24 @@ def switch_turn():
 
 # check and run loop
 while True:
-    # alternate between protocol nodes
-    for pn in pn_choices:
-        # reset round complete
-        round_complete = False
-        while not round_complete:
-            # check if local machine's turn
-            if check_turn():
-                print(f"Running script")
-                arg = pn
-                os.system(f"python {SCRIPT_PATH} {arg}")
-                switch_turn()
-                # indicate that round is complete
-                round_complete = True
-            else:
-                # if not wait before checking again
-                print(f"Waiting for turn on protocol node {pn}...")
-                time.sleep(10)
+    try:
+        # alternate between protocol nodes
+        for pn in pn_choices:
+            # reset round complete
+            round_complete = False
+            while not round_complete:
+                # check if local machine's turn
+                if check_turn():
+                    print(f"Running script")
+                    arg = pn
+                    os.system(f"python {SCRIPT_PATH} {arg}")
+                    switch_turn()
+                    # indicate that round is complete
+                    round_complete = True
+                else:
+                    # if not wait before checking again
+                    print(f"Waiting for turn on protocol node {pn}...")
+                    time.sleep(10)
+    except KeyboardInterrupt:
+        on_exit()
+        sys.exit(0)

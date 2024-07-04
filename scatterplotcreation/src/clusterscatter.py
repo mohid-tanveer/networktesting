@@ -2,7 +2,6 @@ import sys
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from matplotlib.patches import Patch
 import matplotlib.dates as mdates
 from dataformatting import csv_to_dict_cluster, multi_csv_to_dict_cluster
 

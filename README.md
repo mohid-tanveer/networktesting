@@ -12,16 +12,17 @@ networktesting/
 ├── results/
 │   ├── mtanveer (DataCenter).csv (sample output file storing results from file transfers to host mtanveer in location DataCenter)
 ├── scatterplotcreation/
-│   ├── requirements.txt
+│   ├── requirements.txt (required packages for python compilation)
 │   └── output/ (folder to hold PDFs produced)
 │   └── src/
-│       ├── dataformatting.py (format excel data for scatterplotting)
-│       └── scatterplot.py (produce scatterplots per machine partitioned by day)
+│       ├── clusterscatter.py (produce scatterplots for cluster data partitioned by day)
+│       ├── dataformatting.py (format csv data for scatterplotting)
+│       └── scatterplot.py (produce scatterplots for data by workstations partitioned by day)
 └── scripts/
       ├── automator.py (automates the running of file transfer and pn shifting between two machines)
       ├── clusteroverib.py (transfers files on cluster over Infiniband connection)
       ├── clusteroverpn.py (transfers files on cluster over SMB connection)
-      ├── ~control.txt ("lock" file for automator.py, indicates which machine is currently transferring)
+      ├── control.txt ("lock" file for automator.py, indicates which machine is currently transferring)
       ├── data_creation/
       │   ├── 10g.py (sample script to create a 10gb file)
       │   └── 10m.py (sample script to create 10gb worth of 10mb files)
@@ -39,7 +40,7 @@ networktesting/
 - `results/`: This directory stores the results of the network testing in CSV format.
 - `scatterplotcreation/`: This directory contains the scripts used to produce scatterplots of data collected.
 - `scripts/`: This directory contains the scripts used for both the network/storage testing as well as data creation.
-- ~ (Notes: `control.txt` and `secret.py`are not included in this repository for security reasons. They contain sensitive information and should be created locally as applicable to usage.)
+- ~ (Notes: `secret.py` is not included in this repository for security reasons. It contains sensitive information and should be created locally as applicable to usage.)
 
 ## Usage
 
