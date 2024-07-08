@@ -2,8 +2,8 @@ import os
 import sys
 import time
 import socket
-from secret import cf, sp, turn_order, locations
-
+from secret import cf, sp, turn_order, locations, remotepath
+import subprocess
 
 # get the host name
 host_name = socket.gethostname()
@@ -21,13 +21,35 @@ SCRIPT_PATH = sp
 
 # on exit update scatter-plots with any new data
 def on_exit():
+    # update control.txt to exit
+    with open(CONTROL_FILE, "w") as f:
+        f.write('KeyboardInterrupt')
+
     print("Updating relevant scatterplots...")
-    os.system(rf'python3 ..\scatterplotcreation\src\scatterplot.py ..\results\"{host_name} ({location}).csv"')
+    # Define the path to the scatterplot creation directory
+    scatterplot_creation_dir = "{remotepath}\scatterplotcreation"
+    
+    # Create virtual environment if it doesn't exist
+    subprocess.run(["pip", "install", "virtualenv"], check=True)
+    venv_dir = os.path.join(scatterplot_creation_dir, "venv")
+    if not os.path.exists(venv_dir):
+        subprocess.run(["virtualenv", venv_dir], check=True)
+    
+    scatterplot_script = os.path.join(scatterplot_creation_dir, "src", "scatterplot.py")
+    results_file = f"{os.path.join(remotepath, 'results', f'{host_name} ({location}).csv')}"
+    activate_script = os.path.join(venv_dir, "Scripts", "activate")
+
+    # Activate virtual environment and run the script
+    # Install dependencies
+    activate_and_run_commands = f". '{activate_script}'; pip install -r '{os.path.join(scatterplot_creation_dir, "requirements.txt")}'; python '{scatterplot_script}' '{results_file}' r; deactivate"
+    subprocess.run(activate_and_run_commands, shell=True, check=True)
 
 # check if it's this machine's turn to run the script
 def check_turn():
     with open(CONTROL_FILE, "r") as file:
         current_control = file.read().strip()
+    if current_control == 'KeyboardInterrupt':
+        raise KeyboardInterrupt
     return current_control == host_name
 
 # Function to update control file to switch to the other machine
@@ -48,7 +70,7 @@ while True:
                 if check_turn():
                     print(f"Running script")
                     arg = pn
-                    os.system(f"python {SCRIPT_PATH} {arg}")
+                    subprocess.run(f"python {SCRIPT_PATH} {arg}", shell=True, check=True)
                     switch_turn()
                     # indicate that round is complete
                     round_complete = True

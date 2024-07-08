@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.dates as mdates
 from dataformatting import csv_to_dict_cluster, multi_csv_to_dict_cluster
+from scripts.secret import remotepath
 
 # get file path from command line argument and splice the machine name
 file_path = sys.argv[1]

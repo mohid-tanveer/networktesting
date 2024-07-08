@@ -19,7 +19,8 @@ networktesting/
 │       ├── dataformatting.py (format csv data for scatterplotting)
 │       └── scatterplot.py (produce scatterplots for data by workstations partitioned by day)
 └── scripts/
-      ├── automator.py (automates the running of file transfer and pn shifting between two machines)
+      ├── automator.py (automates the running of file transfer and pn shifting between two machines (connects with below))
+      ├── clusterautomator.py (automates the running of file transfer on the cluster (connects with above))
       ├── clusteroverib.py (transfers files on cluster over Infiniband connection)
       ├── clusteroverpn.py (transfers files on cluster over SMB connection)
       ├── control.txt ("lock" file for automator.py, indicates which machine is currently transferring)
