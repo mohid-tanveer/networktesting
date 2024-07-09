@@ -4,6 +4,7 @@ import socket
 from secret import sp2, sp3, locations, remotepath
 import subprocess
 
+# Get the host name and location of the machine
 host_name = socket.gethostname()
 location = locations[host_name]
 

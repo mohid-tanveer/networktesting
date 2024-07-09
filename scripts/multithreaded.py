@@ -6,7 +6,7 @@ import socket
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from secret import pnpaths, locations
 
-# Get the host name and location
+# Get the host name and location of the machine
 host_name = socket.gethostname()
 location = locations[host_name]
 

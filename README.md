@@ -49,7 +49,14 @@ To perform network testing, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Navigate to the `scripts/` directory.
-3. Run the `filetransfer.py` script, passing a protocol node (ex: pn001) as an argument, to initiate the file transfer.
-4. Once the transfer is complete, the script will generate the results and append the values to the files in the results folder.
+3. Create a file `secret.py` or declare necessary variables locally as needed by specified script.
+4. Run the `filetransfer.py` script, passing a protocol node (ex: pn001) as an argument, to initiate the file transfer.
+5. Once the transfer is complete, the script will generate the results and append the values to the files in the results folder.
+
+Variants of the normal file transfer are as follows:
+
+- `automator.py`: This variant automates the process of protocol node shifting, machine variation, and scatterplot production following updated results. `multiautomator.py`, `clusterautomator.py`, and `multiclusterautomator.py` work in the same manner, only varying the location of testing (cluster for file transfers over IB rather than network) or type of file transfer (multithreaded transferring compared to normal singlethreaded tests).
+- `clusteroverib.py`: This variant works exactly the same, only reading the file "locally" on the cluster over an Infiniband connection. `clusteroverpn.py` works more similarly to the `filetransfer.py` script by transferring through protocol node on the cluster.
+- `multithreaded.py`: This variant runs a multithreaded file transfer and is paired with the `singlethreaded.py` file for comparison of results when automated. `multithreadedclusterIB.py` and `singlethreadedclusterIB.py` are also paired for multithreaded transfers over IB on the cluster.
 
 Please note that you may need to modify the scripts to specify the remote folder or server you wish to test.

@@ -5,7 +5,7 @@ import socket
 from secret import cf, sp, turn_order, locations, remotepath
 import subprocess
 
-# get the host name
+# get the host name and location of the machine
 host_name = socket.gethostname()
 location = locations[host_name]
 round_complete = False
