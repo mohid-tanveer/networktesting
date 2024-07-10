@@ -85,7 +85,9 @@ def csv_to_dict(file_path):
         transferspeed = sum(d['transferspeed'] for d in data_dict[i:i+3]) / 3
         protocolnode = data_dict[i]['protocolnode']
         type = data_dict[i]['type']
-        data.append({'timestamp': timestamp.strftime('%-m/%-d/%y %-I:%M %p'), 'transferspeed (MB/s)': transferspeed,
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M %p')
+        formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
+        data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'protocolnode': protocolnode, 'type': type})
         return partition_data(data)
 
