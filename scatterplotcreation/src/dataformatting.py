@@ -89,7 +89,7 @@ def csv_to_dict(file_path):
         formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
         data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'protocolnode': protocolnode, 'type': type})
-        return partition_data(data)
+    return partition_data(data)
 
 def multi_csv_to_dict(file_path):
     # read csv file into a dataframe
