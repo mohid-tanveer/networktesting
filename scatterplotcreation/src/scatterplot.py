@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib.patches import Patch
 import matplotlib.dates as mdates
 from dataformatting import csv_to_dict, multi_csv_to_dict
-from scripts.secret import remotepath
+from secret import remotepath
 
 # define protocol node colors
 protocol_colors = {
@@ -15,10 +15,10 @@ protocol_colors = {
 
 # get file path from command line argument and splice the machine name
 file_path = sys.argv[1]
-remotepath += rf"\output\""
+remotepath += "\\scatterplotcreation\\output\\"
 # check if the path needs to be local or remote
-path = remotepath if sys.argv[2] == 'r' else '../output/'
-machine = file_path.split(".")[0].split("/")[-1]
+path = remotepath if sys.argv[2] == 'r' else '../scatterplotcreation/output/'
+machine = sys.argv[3]
 # read data from the csv file and convert it to a dictionary
 # format: 
 # {timestamp: [timestamp values], 
@@ -99,9 +99,9 @@ for day in data:
 
     # save plot as PDF
     if non_multi:
-        plt.savefig(f'{path}Scatterplot - {machine} {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+        plt.savefig(rf'{path}Scatterplot - {machine} {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
     else:
-        plt.savefig(f'{path}output/Scatterplot - {machine} Multithreaded {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+        plt.savefig(rf'{path}Scatterplot - {machine} Multithreaded {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
     
     # display interactive plot
     plt.show()

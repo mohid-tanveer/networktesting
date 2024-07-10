@@ -105,7 +105,9 @@ def multi_csv_to_dict(file_path):
         timestamp = pd.to_datetime(d['timestamp'])
         transferspeed = d['transferspeed']
         threadtype = d['threadtype']
-        data.append({'timestamp': timestamp.strftime('%-m/%-d/%y %-I:%M %p'), 'transferspeed (MB/s)': transferspeed,
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M %p')
+        formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
+        data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'threadtype': threadtype})
     return partition_data(data, True)
 
@@ -123,7 +125,9 @@ def csv_to_dict_cluster(file_path):
         timestamp = pd.to_datetime([d['timestamp'] for d in data_dict[i:i+3]]).mean()
         transferspeed = sum(d['transferspeed'] for d in data_dict[i:i+3]) / 3
         type = data_dict[i]['type']
-        data.append({'timestamp': timestamp.strftime('%-m/%-d/%y %-I:%M %p'), 'transferspeed (MB/s)': transferspeed,
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M %p')
+        formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
+        data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'type': type})
     return cluster_partition_data(data)
 
@@ -141,6 +145,8 @@ def multi_csv_to_dict_cluster(file_path):
         timestamp = pd.to_datetime(d['timestamp'])
         transferspeed = d['transferspeed']
         threadtype = d['threadtype']
-        data.append({'timestamp': timestamp.strftime('%-m/%-d/%y %-I:%M %p'), 'transferspeed (MB/s)': transferspeed,
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M %p')
+        formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
+        data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'threadtype': threadtype})
     return cluster_partition_data(data, True)
