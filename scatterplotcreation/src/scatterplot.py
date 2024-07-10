@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib.patches import Patch
 import matplotlib.dates as mdates
 from dataformatting import csv_to_dict, multi_csv_to_dict
-from secret import remotepath
+from ssecret import remotepath
 
 # define protocol node colors
 protocol_colors = {
