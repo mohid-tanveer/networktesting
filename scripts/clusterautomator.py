@@ -25,7 +25,7 @@ def on_exit():
     scatterplot_creation_dir = "../scatterplotcreation"
     
     # Create virtual environment if it doesn't exist
-    subprocess.run(["pip install virtualenv"], shell=True, check=True)
+    subprocess.run("pip install virtualenv", shell=True, check=True)
     venv_dir = os.path.join(scatterplot_creation_dir, "venv")
     if not os.path.exists(venv_dir):
         subprocess.run(["virtualenv", venv_dir], check=True)
