@@ -1,10 +1,11 @@
+import os
 import sys
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import matplotlib.dates as mdates
 from dataformatting import csv_to_dict_cluster, multi_csv_to_dict_cluster
-from scripts.secret import remotepath
+from ssecret import remotepath
 
 # get file path from command line argument and splice the machine name
 file_path = sys.argv[1]
@@ -13,7 +14,6 @@ file_path = sys.argv[1]
 # {timestamp: [timestamp values], 
 # type: [type values] or threadtype: [threadtype values],
 # transferspeed_MB/s: [transferspeed_MB/s values], 
-# protocolnode: [protocolnode values]}
 non_multi = True if 'multithreaded' not in file_path else False
 data = csv_to_dict_cluster(file_path) if non_multi else multi_csv_to_dict_cluster(file_path)
 
@@ -24,6 +24,10 @@ for day in data:
     df = pd.DataFrame(day)
     # get the day in plain text
     day_text = day['timestamp'][0].strftime('%m-%d-%y')
+    if os.path.exists(rf'../scatterplotcreation/output/Scatterplot - Cluster {day_text} Transfers.pdf') and non_multi:
+        continue
+    elif os.path.exists(rf'../scatterplotcreation/output/Scatterplot - Cluster Multithreaded {day_text} Transfers.pdf') and not non_multi:
+        continue
 
     if non_multi:
         # isolate 10 GB and 10 MB data
@@ -83,9 +87,9 @@ for day in data:
 
     # save plot as PDF
     if non_multi:
-        plt.savefig(f'../output/Scatterplot - Cluster {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+        plt.savefig(rf'../scatterplotcreation/output/Scatterplot - Cluster {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
     else:
-        plt.savefig(f'../output/Scatterplot - Cluster Multithreaded {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+        plt.savefig(rf'../scatterplotcreation/output/Scatterplot - Cluster Multithreaded {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
     
     # display interactive plot
     plt.show()

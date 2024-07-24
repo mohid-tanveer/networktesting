@@ -25,7 +25,8 @@ def on_exit():
     scatterplot_creation_dir = "../scatterplotcreation"
     
     # Create virtual environment if it doesn't exist
-    subprocess.run("pip install virtualenv", shell=True, check=True)
+    command = [sys.executable, "-m", "pip", "install", "virtualenv"]
+    subprocess.run(command, check=True)
     venv_dir = os.path.join(scatterplot_creation_dir, "venv")
     if not os.path.exists(venv_dir):
         subprocess.run(["virtualenv", venv_dir], check=True)
@@ -36,7 +37,7 @@ def on_exit():
 
     # Activate virtual environment and run the script
     # Install dependencies
-    activate_and_run_commands = f"source '{activate_script}' && pip install -r '{os.path.join(scatterplot_creation_dir, "requirements.txt")}' && python '{scatterplot_script}' '{results_file}' && deactivate"
+    activate_and_run_commands = f"source '{activate_script}' && python -m pip install -r '{os.path.join(scatterplot_creation_dir, "requirements.txt")}' && python '{scatterplot_script}' '{results_file}' && deactivate"
     subprocess.run(activate_and_run_commands, shell=True, check=True)
 
 # check if it's this machine's turn to run the script

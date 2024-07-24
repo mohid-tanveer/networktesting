@@ -1,3 +1,4 @@
+import os
 import sys
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -35,7 +36,10 @@ for day in data:
     df = pd.DataFrame(day)
     # get the day in plain text
     day_text = day['timestamp'][0].strftime('%m-%d-%y')
-
+    if os.path.exists(rf'{path}Scatterplot - {machine} {day_text} Transfers.pdf') and non_multi:
+        continue
+    elif os.path.exists(rf'{path}Scatterplot - {machine} Multithreaded {day_text} Transfers.pdf') and not non_multi:
+        continue
     if non_multi:
         # isolate 10 GB and 10 MB data
         gb_data = df[df['type'] == '10 GB']
