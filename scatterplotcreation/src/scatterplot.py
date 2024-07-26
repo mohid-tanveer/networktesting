@@ -52,11 +52,7 @@ for day in data:
 
     ### plotting
 
-    # calculate figure width by range of timestamps
-    time_range = day['timestamp'].max() - day['timestamp'].min()
-    time_range_hours = time_range.total_seconds() / 3600
-    fig_width = 10 + time_range_hours * 2
-    plt.figure(figsize=(fig_width, 8)) 
+    plt.figure(figsize=(28, 8)) 
 
     if non_multi:
         # scatter plot for 10 GB transfers with square markers mapping color to protocol node
