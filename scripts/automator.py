@@ -27,7 +27,7 @@ def on_exit():
     with open(CONTROL_FILE, "w") as f:
         f.write('KeyboardInterrupt')
 
-    print("Updating relevant scatterplots and box and whiskerplots...")
+    print("Updating relevant scatterplots and box and whisker plots...")
     # define the path to the scatterplot creation directory and box and whisker creation directory
     scatterplot_creation_dir = r"..\scatterplotcreation"
     box_and_whisker_creation_dir = r"..\boxandwhiskercreation"
