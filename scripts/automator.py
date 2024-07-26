@@ -7,7 +7,9 @@ import subprocess
 
 # get the host name and location of the machine
 host_name = socket.gethostname()
+other_host = 'D241962' if host_name == 'D242016' else 'D242016'
 location = locations[host_name]
+other_location = locations[other_host]
 round_complete = False
 
 # set up protocol node choices
@@ -25,24 +27,33 @@ def on_exit():
     with open(CONTROL_FILE, "w") as f:
         f.write('KeyboardInterrupt')
 
-    print("Updating relevant scatterplots...")
-    # Define the path to the scatterplot creation directory
+    print("Updating relevant scatterplots and box and whiskerplots...")
+    # define the path to the scatterplot creation directory and box and whisker creation directory
     scatterplot_creation_dir = r"..\scatterplotcreation"
+    box_and_whisker_creation_dir = r"..\boxandwhiskercreation"
     
-    # Create virtual environment if it doesn't exist
+    # create virtual environment if it doesn't exist
     subprocess.run("pip install virtualenv", shell=True, check=True)
-    venv_dir = os.path.join(scatterplot_creation_dir, "venv")
-    if not os.path.exists(venv_dir):
-        subprocess.run(["virtualenv", venv_dir], check=True)
+    scatter_venv_dir = os.path.join(scatterplot_creation_dir, "venv")
+    box_venv_dir = os.path.join(box_and_whisker_creation_dir, "venv")
+    if not os.path.exists(scatter_venv_dir):
+        subprocess.run(["virtualenv", scatter_venv_dir], check=True)
+    if not os.path.exists(box_venv_dir):
+        subprocess.run(["virtualenv", box_venv_dir], check=True)
     
     scatterplot_script = os.path.join(scatterplot_creation_dir, "src", "scatterplot.py")
-    results_file = f"{os.path.join(remotepath, 'results', f'{host_name} ({location}).csv')}"
-    activate_script = os.path.join(venv_dir, "Scripts", "activate.bat")
+    box_and_whisker_script = os.path.join(box_and_whisker_creation_dir, "src", "boxandwhisker.py")
+    scatter_results_file = f"{os.path.join(remotepath, 'results', f'{host_name} ({location}).csv')}"
+    other_results_file = f"{os.path.join(remotepath, 'results', f'{other_host} ({other_location}).csv')}"
+    scatter_activate_script = os.path.join(scatter_venv_dir, "Scripts", "activate.bat")
+    box_activate_script = os.path.join(box_venv_dir, "Scripts", "activate.bat")
 
     # Activate virtual environment and run the script
     # Install dependencies
-    activate_and_run_commands = f"\"{activate_script}\" && pip install -r \"{os.path.join(scatterplot_creation_dir, 'requirements.txt')}\" && python \"{scatterplot_script}\" \"{results_file}\" r {host_name} && deactivate"
-    subprocess.run(activate_and_run_commands, shell=True, check=True)
+    scatter_activate_and_run_commands = f"\"{scatter_activate_script}\" && pip install -r \"{os.path.join(scatterplot_creation_dir, 'requirements.txt')}\" && python \"{scatterplot_script}\" \"{scatter_results_file}\" r {host_name} && deactivate"
+    box_activate_and_run_commands = f"\"{box_activate_script}\" && pip install -r \"{os.path.join(box_and_whisker_creation_dir, 'requirements.txt')}\" && python \"{box_and_whisker_script}\" \"{scatter_results_file}\" \"{other_results_file}\" {host_name} {other_host} && deactivate"
+    subprocess.run(scatter_activate_and_run_commands, shell=True, check=True)
+    subprocess.run(box_activate_and_run_commands, shell=True, check=True)
 
 # check if it's this machine's turn to run the script
 def check_turn():
