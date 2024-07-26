@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from dataformatting import csv_to_dict_box
-from ssecret import remotepath
+from sssecret import remotepath
 
 # Define transfer size colors
 transfer_size_colors = {

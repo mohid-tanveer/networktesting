@@ -164,4 +164,5 @@ cython_debug/
 # Additional
 /scripts/secret.py
 /scatterplotcreation/src/ssecret.py
+/boxandwhiskercreation/src/sssecret.py
 /.vscode
