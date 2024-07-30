@@ -5,10 +5,10 @@ import subprocess
 # on exit update scatter-plots with any new data
 def on_exit():
     print("Updating relevant scatterplots...")
-    # Define the path to the scatterplot creation directory
+    # define the path to the scatterplot creation directory
     scatterplot_creation_dir = "../scatterplotcreation"
     
-    # Create virtual environment if it doesn't exist
+    # create virtual environment if it doesn't exist
     subprocess.run(["pip", "install", "virtualenv"], check=True)
     venv_dir = os.path.join(scatterplot_creation_dir, "venv")
     if not os.path.exists(venv_dir):
@@ -18,8 +18,7 @@ def on_exit():
     results_file = f"../results/clusterIB multithreaded.csv"
     activate_script = os.path.join(venv_dir, "bin", "activate")
 
-    # Activate virtual environment and run the script
-    # Install dependencies
+    # activate virtual environment, install dependencies, and run the script
     activate_and_run_commands = f"source '{activate_script}' && pip install -r '{os.path.join(scatterplot_creation_dir, "requirements.txt")}' && python '{scatterplot_script}' '{results_file}' && deactivate"
     subprocess.run(activate_and_run_commands, shell=True, check=True)
 

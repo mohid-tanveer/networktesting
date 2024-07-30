@@ -1,6 +1,6 @@
 import os
 import sys
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
 from matplotlib.patches import Patch
@@ -52,57 +52,34 @@ for day in data:
 
     ### plotting
 
-    plt.figure(figsize=(28, 8)) 
-
-    if non_multi:
-        # scatter plot for 10 GB transfers with square markers mapping color to protocol node
-        plt.scatter(gb_data['timestamp'], gb_data['transferspeed_MB/s'], s=100, c=gb_data['protocolnode'].map(protocol_colors), marker='s', label='10 GB')
-
-        # scatter plot for 10 MB transfers with circle markers mapping color to protocol node
-        plt.scatter(mb_data['timestamp'], mb_data['transferspeed_MB/s'], s=100, c=mb_data['protocolnode'].map(protocol_colors), marker='o', label='10 MB')
-    else:
-        # scatter plot for multithreaded transfers with square markers mapping color to protocol node
-        plt.scatter(multi_data['timestamp'], multi_data['transferspeed_MB/s'], s=100, c=multi_data['protocolnode'].map(protocol_colors), marker='s', label='Multithreaded')
-
-        # scatter plot for singlethreaded transfers with circle markers mapping color to protocol node
-        plt.scatter(single_data['timestamp'], single_data['transferspeed_MB/s'], s=100, c=single_data['protocolnode'].map(protocol_colors), marker='o', label='Singlethreaded')
-
+    fig = go.Figure()
+    for protocol, color in protocol_colors.items():
+        protocol_data = df[df['protocolnode'] == protocol]
+        fig.add_trace(go.Scatter(x=protocol_data['timestamp'], 
+                                 y=protocol_data['transferspeed_MB/s'], 
+                                 mode='markers', 
+                                 marker=dict(color=color), 
+                                 name=protocol))
+        
     # add labels and title
-    plt.xlabel('Timestamp')
-    plt.ylabel('Transfer Speed (MB/s)')
-    if non_multi:
-        plt.title(f'{machine} File Transfers on {day_text}')
-    else:
-        plt.title(f'{machine} Multithreaded File Transfers on {day_text}')
+    fig.update_layout(title=f'Scatterplot - {machine} {"Multithreaded" if not non_multi else ""} {day_text} Transfers',
+                        xaxis_title='Timestamp',
+                        xaxis=dict(
+                            tickmode='auto',  # Plotly will automatically determine ticks
+                            tickformat='%m-%d %I:%M %p',  # Format for date-time ticks
+                            rangeslider=dict(visible=True)  # Optional: add a range slider
+                        ),
+                        yaxis_title='Transfer Speed (MB/s)',
+                        legend_title='Protocol Nodes',
+                        legend=dict(x=1.05, y=1, bordercolor="Black", borderwidth=1))
 
-    # create legend for transfer size and protocol nodes
-    if non_multi:
-        size_legend = plt.legend(title="Transfer Size", loc='upper left', bbox_to_anchor=(1.05, 1), borderaxespad=0.)
-    else:
-        thread_legend = plt.legend(title="Thread Type", loc='upper left', bbox_to_anchor=(1.05, 1), borderaxespad=0.)
-    protocol_patches = [Patch(color=color, label=protocol) for protocol, color in protocol_colors.items()]
-    # add the transfer size and protocol node legends to the plot
-    plt.legend(handles=protocol_patches, title="Protocol Nodes", loc='upper right', bbox_to_anchor=(1.15, 0.85), borderaxespad=0.)
-    if non_multi:
-        plt.gca().add_artist(size_legend)
-    else:
-        plt.gca().add_artist(thread_legend)
-
-    # format x axis to show date and time in 30 minute intervals
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d %I:%M %p'))
-    plt.gca().xaxis.set_major_locator(mdates.MinuteLocator(interval=30))  # Ensure a half-hour interval
-    plt.xticks(rotation=45)
-    # set the x-axis limits to first and last timestamp
-    plt.xlim(day['timestamp'].min() - pd.Timedelta(minutes=30), day['timestamp'].max() + pd.Timedelta(minutes=30))
-    # set the y-axis limits to min and max
-    transferspeed_array = np.array(day['transferspeed_MB/s'])
-    plt.ylim(transferspeed_array.min() - 50, transferspeed_array.max() + 50)
+    
 
     # save plot as PDF
     if non_multi:
-        plt.savefig(rf'{path}Scatterplot - {machine} {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+        fig.write_html(rf'{path}Scatterplot - {machine} {day_text} Transfers.html')
     else:
-        plt.savefig(rf'{path}Scatterplot - {machine} Multithreaded {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+        fig.write_html(rf'{path}Scatterplot - {machine} Multithreaded {day_text} Transfers.html')
     
     # display interactive plot
-    plt.show()
+    fig.show()

@@ -48,8 +48,7 @@ def on_exit():
     scatter_activate_script = os.path.join(scatter_venv_dir, "Scripts", "activate.bat")
     box_activate_script = os.path.join(box_venv_dir, "Scripts", "activate.bat")
 
-    # Activate virtual environment and run the script
-    # Install dependencies
+    # activate virtual environment, install dependencies, and run the script
     scatter_activate_and_run_commands = f"\"{scatter_activate_script}\" && pip install -r \"{os.path.join(scatterplot_creation_dir, 'requirements.txt')}\" && python \"{scatterplot_script}\" \"{scatter_results_file}\" r {host_name} && deactivate"
     box_activate_and_run_commands = f"\"{box_activate_script}\" && pip install -r \"{os.path.join(box_and_whisker_creation_dir, 'requirements.txt')}\" && python \"{box_and_whisker_script}\" \"{scatter_results_file}\" \"{other_results_file}\" {host_name} {other_host} && deactivate"
     subprocess.run(scatter_activate_and_run_commands, shell=True, check=True)
@@ -63,7 +62,7 @@ def check_turn():
         raise KeyboardInterrupt
     return current_control == host_name
 
-# Function to update control file to switch to the other machine
+# function to update control file to switch to the next machine
 def switch_turn():
     next_machine = turn_order[(turn_order.index(host_name) + 1) % len(turn_order)]
     with open(CONTROL_FILE, "w") as f:

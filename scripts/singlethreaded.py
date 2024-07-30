@@ -5,7 +5,7 @@ import csv
 import socket
 from secret import pnpaths, locations
 
-# Get the host name and location of the machine
+# get the host name and location of the machine
 host_name = socket.gethostname()
 location = locations[host_name]
 

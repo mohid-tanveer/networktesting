@@ -165,4 +165,5 @@ cython_debug/
 /scripts/secret.py
 /scatterplotcreation/src/ssecret.py
 /boxandwhiskercreation/src/sssecret.py
+/boxandwhiskercreation/src/temp/
 /.vscode

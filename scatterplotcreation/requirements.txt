@@ -6,7 +6,6 @@ et-xmlfile==1.1.0
 filelock==3.15.4
 fonttools==4.53.0
 kiwisolver==1.4.5
-matplotlib==3.9.0
 numpy==2.0.0
 openpyxl==3.1.5
 packaging==24.1

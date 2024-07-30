@@ -1,9 +1,20 @@
 import pandas as pd
 
-def partition_data_box(data):
-    # partition data by days
+def partition_data_box(data, total):
     data.sort(key=lambda x: x['timestamp'])
     partitioned_data = []
+    if total:
+        # skip partitioning and directly format the entire dataset
+        formatted_data = {
+            'timestamp': [d['timestamp'] for d in data],
+            'transferspeed_MB/s': [round(d['transferspeed (MB/s)'], 10) for d in data],
+            'protocolnode': [d['protocolnode'] for d in data],
+            'type': [d['type'] for d in data],
+            'machine': [d['machine'] for d in data]
+        }
+        partitioned_data.append(formatted_data)
+        return partitioned_data
+    # else partition data by days
     current_day = data[0]['timestamp'].split()[0]
     current_partition = []
     for d in data:
@@ -29,7 +40,7 @@ def partition_data_box(data):
         
     return partitioned_data
 
-def csv_to_dict_box(file_path, file_path2, machine1, machine2):
+def csv_to_dict_box(file_path, file_path2, machine1, machine2, total=False):
     # read both csv files into dataframes
     df1 = pd.read_csv(file_path)
     df2 = pd.read_csv(file_path2)
@@ -56,4 +67,4 @@ def csv_to_dict_box(file_path, file_path2, machine1, machine2):
         formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
         data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'protocolnode': protocolnode, 'type': type, 'machine': machine2})
-    return partition_data_box(data)
+    return partition_data_box(data, total)

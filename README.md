@@ -9,15 +9,24 @@ The file structure of this repository is as follows:
 ```plaintext
 networktesting/
 ├── README.md
+├── boxandwhiskercreation/
+│    ├── output/ (folder to hold PDFs produced)
+│    ├── requirements.txt (required packages for python compilation)
+│    └── src
+│    │   ├── boxandwhisker.py (produce box and whisker plots for data partitioned by day)
+│    │   ├── boxandwhiskertotal.py (produce box and whisker plots for all data collected)
+│    │   ├── dataformatting.py (format csv data for boxplotting)
+│    │   └── ~sssecret.py (file with paths and turn order for automator)
 ├── results/
 │   ├── mtanveer (DataCenter).csv (sample output file storing results from file transfers to host mtanveer in location DataCenter)
 ├── scatterplotcreation/
+│   ├── output/ (folder to hold PDFs produced)
 │   ├── requirements.txt (required packages for python compilation)
-│   └── output/ (folder to hold PDFs produced)
 │   └── src/
-│       ├── clusterscatter.py (produce scatterplots for cluster data partitioned by day)
-│       ├── dataformatting.py (format csv data for scatterplotting)
-│       └── scatterplot.py (produce scatterplots for data by workstations partitioned by day)
+│   │   ├── clusterscatter.py (produce scatterplots for cluster data partitioned by day)
+│   │   ├── dataformatting.py (format csv data for scatterplotting)
+│   │   ├── scatterplot.py (produce scatterplots for data by workstations partitioned by day)
+│   │   └── ~ssecret.py (file with paths and turn order for automator)
 └── scripts/
       ├── automator.py (automates the running of file transfer and pn shifting between two machines (connects with below))
       ├── clusterautomator.py (automates the running of file transfer on the cluster (connects with above))
@@ -38,6 +47,7 @@ networktesting/
 ```
 
 - `README.md`: This file provides an overview of the project and its file structure.
+- `boxandwhiskercreation/`: This directory contains the scripts used to produce box and whisker plots of data collected.
 - `results/`: This directory stores the results of the network testing in CSV format.
 - `scatterplotcreation/`: This directory contains the scripts used to produce scatterplots of data collected.
 - `scripts/`: This directory contains the scripts used for both the network/storage testing as well as data creation.

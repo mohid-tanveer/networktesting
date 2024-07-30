@@ -21,10 +21,10 @@ def on_exit():
         f.write('KeyboardInterrupt')
         
     print("Updating relevant scatterplots...")
-    # Define the path to the scatterplot creation directory
+    # define the path to the scatterplot creation directory
     scatterplot_creation_dir = "../scatterplotcreation"
     
-    # Create virtual environment if it doesn't exist
+    # csreate virtual environment if it doesn't exist
     command = [sys.executable, "-m", "pip", "install", "virtualenv"]
     subprocess.run(command, check=True)
     venv_dir = os.path.join(scatterplot_creation_dir, "venv")
@@ -35,8 +35,7 @@ def on_exit():
     results_file = f"../results/{host_name}IB.csv"
     activate_script = os.path.join(venv_dir, "bin", "activate")
 
-    # Activate virtual environment and run the script
-    # Install dependencies
+    # activate virtual environment, install dependencies, and run the script
     activate_and_run_commands = f"source '{activate_script}' && python -m pip install -r '{os.path.join(scatterplot_creation_dir, "requirements.txt")}' && python '{scatterplot_script}' '{results_file}' && deactivate"
     subprocess.run(activate_and_run_commands, shell=True, check=True)
 
@@ -48,7 +47,7 @@ def check_turn():
         raise KeyboardInterrupt
     return current_control == host_name
 
-# Function to update control file to switch to the other machine
+# function to update control file to switch to the other machine
 def switch_turn():
     next_machine = turn_order[(turn_order.index(host_name) + 1) % len(turn_order)]
     with open(CONTROL_FILE, "w") as f:
