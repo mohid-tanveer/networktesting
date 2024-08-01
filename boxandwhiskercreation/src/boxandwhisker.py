@@ -17,7 +17,7 @@ transfer_size_colors = {
 path = "../output/"
 
 # get file paths from command line arguments and read data from the csv files
-file_paths = sys.argv[1:3]  # Assuming the first two arguments after the script name are file paths
+file_paths = sys.argv[1:3]
 machine1 = sys.argv[3]
 machine2 = sys.argv[4]
 # read data from the csv file and convert it to a dictionary

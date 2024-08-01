@@ -14,6 +14,7 @@ networktesting/
 │    ├── requirements.txt (required packages for python compilation)
 │    └── src
 │    │   ├── boxandwhisker.py (produce box and whisker plots for data partitioned by day)
+│    │   ├── boxandwhiskerself.py (produce box and whisker plots for single machine data partitioned by day)
 │    │   ├── boxandwhiskertotal.py (produce box and whisker plots for all data collected)
 │    │   ├── dataformatting.py (format csv data for boxplotting)
 │    │   └── ~sssecret.py (file with paths and turn order for automator)
