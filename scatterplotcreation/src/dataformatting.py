@@ -85,7 +85,45 @@ def csv_to_dict(file_path):
         transferspeed = sum(d['transferspeed'] for d in data_dict[i:i+3]) / 3
         protocolnode = data_dict[i]['protocolnode']
         type = data_dict[i]['type']
-        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M %p')
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M:%S %p')
+        formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
+        data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
+                     'protocolnode': protocolnode, 'type': type})
+    return partition_data(data)
+
+def csv_to_dict_total(file_path):
+    df = pd.read_csv(file_path)
+    data_dict = df.to_dict(orient='records')
+    data=[]
+    for i in range(0, len(data_dict), 3):
+        # average the timestamp and transferspeed
+        timestamp = pd.to_datetime([d['timestamp'] for d in data_dict[i:i+3]]).mean()
+        transferspeed = sum(d['transferspeed'] for d in data_dict[i:i+3]) / 3
+        protocolnode = data_dict[i]['protocolnode']
+        type = data_dict[i]['type']
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M:%S %p')
+        formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
+        data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
+                     'protocolnode': protocolnode, 'type': type})
+    # skip partitioning and format data
+    formatted_data = {
+        'timestamp': [d['timestamp'] for d in data],
+        'transferspeed_MB/s': [round(d['transferspeed (MB/s)'], 10) for d in data],
+        'protocolnode': [d['protocolnode'] for d in data],
+        'type': [d['type'] for d in data]
+    }
+    return [formatted_data]
+
+def csv_dict(file_path):
+    df = pd.read_csv(file_path)
+    data_dict = df.to_dict(orient='records')
+    data=[]
+    for d in data_dict:
+        timestamp = pd.to_datetime(d['timestamp'])
+        transferspeed = d['transferspeed']
+        protocolnode = d['protocolnode']
+        type = d['type']
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M:%S %p')
         formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
         data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'protocolnode': protocolnode, 'type': type})
@@ -105,7 +143,7 @@ def multi_csv_to_dict(file_path):
         timestamp = pd.to_datetime(d['timestamp'])
         transferspeed = d['transferspeed']
         threadtype = d['threadtype']
-        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M %p')
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M:%S %p')
         formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
         data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'threadtype': threadtype})
@@ -125,7 +163,7 @@ def csv_to_dict_cluster(file_path):
         timestamp = pd.to_datetime([d['timestamp'] for d in data_dict[i:i+3]]).mean()
         transferspeed = sum(d['transferspeed'] for d in data_dict[i:i+3]) / 3
         type = data_dict[i]['type']
-        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M %p')
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M:%S %p')
         formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
         data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'type': type})
@@ -145,7 +183,7 @@ def multi_csv_to_dict_cluster(file_path):
         timestamp = pd.to_datetime(d['timestamp'])
         transferspeed = d['transferspeed']
         threadtype = d['threadtype']
-        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M %p')
+        formatted_timestamp = timestamp.strftime('%m/%d/%y %I:%M:%S %p')
         formatted_timestamp = formatted_timestamp.replace('/0', '/').replace(' 0', ' ')
         data.append({'timestamp': formatted_timestamp, 'transferspeed (MB/s)': transferspeed,
                      'threadtype': threadtype})

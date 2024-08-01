@@ -25,7 +25,9 @@ networktesting/
 │   └── src/
 │   │   ├── clusterscatter.py (produce scatterplots for cluster data partitioned by day)
 │   │   ├── dataformatting.py (format csv data for scatterplotting)
-│   │   ├── scatterplot.py (produce scatterplots for data by workstations partitioned by day)
+│   │   ├── scatterplot.py (produce scatterplots for data by workstation partitioned by day)
+│   │   ├── scatterplotconsolidated.py (produce scatterplots for data by workstation)
+│   │   ├── scatterplotunaveraged.py (produce scatterplots for unaveraged data by workstations partitioned by day)
 │   │   └── ~ssecret.py (file with paths and turn order for automator)
 └── scripts/
       ├── automator.py (automates the running of file transfer and pn shifting between two machines (connects with below))

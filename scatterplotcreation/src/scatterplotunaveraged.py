@@ -3,7 +3,7 @@ import sys
 import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
-from dataformatting import csv_to_dict, multi_csv_to_dict
+from dataformatting import csv_to_dict, multi_csv_to_dict, csv_dict
 from ssecret import remotepath
 
 # define protocol node colors
@@ -23,7 +23,7 @@ machine = sys.argv[2]
 # transferspeed_MB/s: [transferspeed_MB/s values], 
 # protocolnode: [protocolnode values]}
 non_multi = True if 'multithreaded' not in file_path else False
-data = csv_to_dict(file_path) if non_multi else multi_csv_to_dict(file_path)
+data = csv_dict(file_path) if non_multi else multi_csv_to_dict(file_path)
 
 # iterate over each day's data
 for day in data:
@@ -33,9 +33,9 @@ for day in data:
     # get the day in plain text
     day_text = day['timestamp'][0].strftime('%m-%d-%y')
     if day['timestamp'][0].date() != pd.Timestamp.now().date():
-        if os.path.exists(rf'{path}Scatterplot - {machine} {day_text} Transfers.html') and non_multi:
+        if os.path.exists(rf'{path}Scatterplot - {machine} Unaveraged {day_text} Transfers.html') and non_multi:
             continue
-        elif os.path.exists(rf'{path}Scatterplot - {machine} Multithreaded {day_text} Transfers.html') and not non_multi:
+        elif os.path.exists(rf'{path}Scatterplot - {machine} Unaveraged Multithreaded {day_text} Transfers.html') and not non_multi:
             continue
 
     ### plotting
@@ -68,7 +68,7 @@ for day in data:
                              hovertext=[f"{protocol} 10MB, Z-score: {z:.2f}" for z in z_scores_mb]))
         
     # add labels and title
-    fig.update_layout(title=f'Scatterplot - {machine} {"Multithreaded" if not non_multi else ""} {day_text} Transfers',
+    fig.update_layout(title=f'Scatterplot - {machine} Unaveraged {"Multithreaded" if not non_multi else ""} {day_text} Transfers',
                         xaxis_title='Timestamp',
                         xaxis=dict(
                             tickmode='auto',
@@ -102,9 +102,9 @@ for day in data:
 
     # save plot as PDF
     if non_multi:
-        fig.write_html(rf'{path}Scatterplot - {machine} {day_text} Transfers.html')
+        fig.write_html(rf'{path}Scatterplot - {machine} Unaveraged {day_text} Transfers.html')
     else:
-        fig.write_html(rf'{path}Scatterplot - {machine} Multithreaded {day_text} Transfers.html')
+        fig.write_html(rf'{path}Scatterplot - {machine} Unaveraged Multithreaded {day_text} Transfers.html')
     
     # display interactive plot
     fig.show()

@@ -59,7 +59,7 @@ for transfer_size in ['10 GB', '10 MB']:
     fig.update_layout(title=f'Box and Whisker Plot - All {transfer_size} Transfers',
                       yaxis_title='Transfer Speed (MB/s)',
                       boxmode='group',
-                      margin=dict(b=150))
+                      margin=dict(b=170))
 
     # calculate central y position for the statistical values text
     all_machine_data = df[df['type'] == transfer_size]['transferspeed_MB/s']
@@ -70,23 +70,23 @@ for transfer_size in ['10 GB', '10 MB']:
         machine_data = df[(df['machine'] == machine) & (df['type'] == transfer_size)]['transferspeed_MB/s']
         std_dev = np.std(machine_data)
         variance = np.var(machine_data)
-        stats_text += f"{machine}\nStd Dev: {std_dev:.2f}\nVariance: {variance:.2f}\n\n"
+        stats_text += f"{machine}<br>Std Dev: {std_dev:.2f}<br>Variance: {variance:.2f}<br><br>"
     fig.add_annotation(text=stats_text, xref="paper", yref="paper",
-                       x=0.5, y=-0.1, showarrow=False, align="center")
+                       x=0.5, y=-0.24, showarrow=False, align="center")
 
     machine1_data = df[(df['machine'] == machines[0]) & (df['type'] == transfer_size)]['transferspeed_MB/s']
     machine2_data = df[(df['machine'] == machines[1]) & (df['type'] == transfer_size)]['transferspeed_MB/s']
     t_stat, p_value = ttest_ind(machine1_data, machine2_data)
 
     # display the t-test results
-    t_test_text = f"T-test results:\nT-statistic: {t_stat:.2f}\nP-value: {p_value:.2e}"
+    t_test_text = f"T-test results:<br>T-statistic: {t_stat:.2f}<br>P-value: {p_value:.2e}"
     if p_value < 0.05:
-        t_test_text += "\nDifference is statistically significant"
+        t_test_text += "<br>Difference is statistically significant"
     else:
-        t_test_text += "\nNo significant difference"
+        t_test_text += "<br>No significant difference"
 
     fig.add_annotation(text=t_test_text, xref="paper", yref="paper",
-                       x=0.5, y=-0.2, showarrow=False, align="center", font=dict(size=10))
+                       x=0.5, y=-0.34, showarrow=False, align="center", font=dict(size=10))
     fig.write_html(f'{path}Box and Whisker - All {transfer_size} Transfers.html')
     # display the plot
     fig.show()

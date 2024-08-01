@@ -1,9 +1,8 @@
 import os
 import sys
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-import matplotlib.dates as mdates
 from dataformatting import csv_to_dict_cluster, multi_csv_to_dict_cluster
 from ssecret import remotepath
 
@@ -25,72 +24,64 @@ for day in data:
     # get the day in plain text
     day_text = day['timestamp'][0].strftime('%m-%d-%y')
     if day['timestamp'][0].date() != pd.Timestamp.now().date():
-        if os.path.exists(rf'../scatterplotcreation/output/Scatterplot - Cluster {day_text} Transfers.pdf') and non_multi:
+        if os.path.exists(rf'../output/Scatterplot - Cluster {day_text} Transfers.html') and non_multi:
             continue
-        elif os.path.exists(rf'../scatterplotcreation/output/Scatterplot - Cluster Multithreaded {day_text} Transfers.pdf') and not non_multi:
+        elif os.path.exists(rf'../output/Scatterplot - Cluster Multithreaded {day_text} Transfers.html') and not non_multi:
             continue
 
-    if non_multi:
-        # isolate 10 GB and 10 MB data
-        gb_data = df[df['type'] == '10 GB']
-        mb_data = df[df['type'] == '10 MB']
-    else:
-        # isolate multithreaded and singlethreaded data
-        multi_data = df[df['threadtype'] == 'multi']
-        single_data = df[df['threadtype'] == 'single']
+    ten_GB_data = df[df['type'] == '10 GB']
+    ten_MB_data = df[df['type'] == '10 MB']
+    mean_gb = np.mean(ten_GB_data['transferspeed_MB/s'])
+    std_dev_gb = np.std(ten_GB_data['transferspeed_MB/s'])
+    mean_mb = np.mean(ten_MB_data['transferspeed_MB/s'])
+    std_dev_mb = np.std(ten_MB_data['transferspeed_MB/s'])
 
     ### plotting
+    fig = go.Figure()
+    z_scores_gb = [(x - mean_gb) / std_dev_gb for x in ten_GB_data['transferspeed_MB/s']]
+    z_scores_mb = [(x - mean_mb) / std_dev_mb for x in ten_MB_data['transferspeed_MB/s']]
+    fig.add_trace(go.Scatter(x=ten_GB_data['timestamp'], 
+                        y=ten_GB_data['transferspeed_MB/s'], 
+                        mode='markers', 
+                        marker=dict(color="red"), 
+                        name=f"10GB",
+                        hoverinfo='x+y+text',
+                        hovertext=[f"10GB, Z-score: {z:.2f}" for z in z_scores_gb]))
+    fig.add_trace(go.Scatter(x=ten_MB_data['timestamp'], 
+                        y=ten_MB_data['transferspeed_MB/s'], 
+                        mode='markers', 
+                        marker=dict(color="blue", symbol='diamond'), 
+                        name=f"10MB",
+                        hoverinfo='x+y+text',
+                        hovertext=[f"10MB, Z-score: {z:.2f}" for z in z_scores_mb]))
+    
+    fig.update_layout(title=f'Scatterplot - Cluster {"Multithreaded" if not non_multi else ""} {day_text} Transfers',
+                        xaxis_title='Timestamp',
+                        xaxis=dict(
+                            tickmode='auto',
+                            tickformat='%m-%d %I:%M %p',
+                            rangeslider=dict(visible=True)
+                        ),
+                        yaxis_title='Transfer Speed (MB/s)',
+                        legend_title='Transfer Size',
+                        legend=dict(x=1.05, y=1, bordercolor="Black", borderwidth=1),
+                        margin=dict(b=150))
+    
+    # add std dev and variance for all data
+    variance_gb = np.var(ten_GB_data['transferspeed_MB/s'])
+    variance_mb = np.var(ten_MB_data['transferspeed_MB/s'])
+    stat_text = f"10 GB Data<br>Std Dev: {std_dev_gb:.2f}<br>Variance: {variance_gb:.2f}"
+    stat_text += f"<br><br>10 MB Data<br>Std Dev: {std_dev_mb:.2f}<br>Variance: {variance_mb:.2f}"
 
-    # calculate figure width by range of timestamps
-    time_range = day['timestamp'].max() - day['timestamp'].min()
-    time_range_hours = time_range.total_seconds() / 3600
-    fig_width = 10 + time_range_hours * 2
-    plt.figure(figsize=(fig_width, 8)) 
-
-    if non_multi:
-        # scatter plot for 10 GB transfers with square markers
-        plt.scatter(gb_data['timestamp'], gb_data['transferspeed_MB/s'], s=100, marker='s', label='10 GB')
-
-        # scatter plot for 10 MB transfers with circle markers
-        plt.scatter(mb_data['timestamp'], mb_data['transferspeed_MB/s'], s=100, marker='o', label='10 MB')
-    else:
-        # scatter plot for multithreaded transfers with square markers
-        plt.scatter(multi_data['timestamp'], multi_data['transferspeed_MB/s'], s=100, marker='s', label='Multithreaded')
-
-        # scatter plot for singlethreaded transfers with circle markers
-        plt.scatter(single_data['timestamp'], single_data['transferspeed_MB/s'], s=100, marker='o', label='Singlethreaded')
-
-    # add labels and title
-    plt.xlabel('Timestamp')
-    plt.ylabel('Transfer Speed (MB/s)')
-    if non_multi:
-        plt.title(f'Cluster File Transfers on {day_text}')
-    else:
-        plt.title(f'Cluster Multithreaded File Transfers on {day_text}')
-
-    # create legend for transfer size
-    if non_multi:
-        size_legend = plt.legend(title="Transfer Size", loc='upper left', bbox_to_anchor=(1.05, 1), borderaxespad=0.)
-        plt.gca().add_artist(size_legend)
-    else:
-        thread_legend = plt.legend(title="Thread Type", loc='upper left', bbox_to_anchor=(1.05, 1), borderaxespad=0.)
-        plt.gca().add_artist(thread_legend)
-
-    # format x axis to show date and time in 30 minute intervals
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d %I:%M %p'))
-    plt.gca().xaxis.set_major_locator(mdates.MinuteLocator(interval=30))  # Ensure a half-hour interval
-    plt.xticks(rotation=45)
-    # set the x-axis limits to first and last timestamp
-    plt.xlim(day['timestamp'].min() - pd.Timedelta(minutes=30), day['timestamp'].max() + pd.Timedelta(minutes=30))
-    # set the y-axis limits to min and max
-    transferspeed_array = np.array(day['transferspeed_MB/s'])
-    plt.ylim(transferspeed_array.min() - 50, transferspeed_array.max() + 50)
+    fig.add_annotation(text=stat_text, xref="paper", yref="paper",
+                    x=.5, y=-0.625, showarrow=False, align="left",
+                    bordercolor="Black", borderwidth=1)
 
     # save plot as PDF
     if non_multi:
-        plt.savefig(rf'../scatterplotcreation/output/Scatterplot - Cluster {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+        fig.write_html(rf'../output/Scatterplot - Cluster {day_text} Transfers.html')
     else:
-        plt.savefig(rf'../scatterplotcreation/output/Scatterplot - Cluster Multithreaded {day_text} Transfers.pdf', format='pdf', bbox_inches='tight')
+        fig.write_html(rf'../output/Scatterplot - Cluster Multithreaded {day_text} Transfers.html')
     
     # display interactive plot
-    plt.show()
+    fig.show()
