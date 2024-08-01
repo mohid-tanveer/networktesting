@@ -1,6 +1,6 @@
 import os
 import sys
-import plotly.graph_objects as go
+import plotly.graph_objects as go # type: ignore
 import numpy as np
 import pandas as pd
 from dataformatting import csv_to_dict_total, multi_csv_to_dict

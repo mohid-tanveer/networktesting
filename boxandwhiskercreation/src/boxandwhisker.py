@@ -1,11 +1,11 @@
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+import plotly.graph_objects as go # type: ignore
+from plotly.subplots import make_subplots # type: ignore
 import uuid
 import pandas as pd
 import os
 import sys
 from dataformatting import csv_to_dict_box
-from scipy.stats import ttest_ind
+from scipy.stats import ttest_ind # type: ignore
 import numpy as np
 
 # Define transfer size colors
