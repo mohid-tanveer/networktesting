@@ -14,39 +14,50 @@ networktesting/
 │    ├── requirements.txt (required packages for python compilation)
 │    └── src
 │    │   ├── boxandwhisker.py (produce box and whisker plots for data partitioned by day)
-│    │   ├── boxandwhiskerself.py (produce box and whisker plots for single machine data partitioned by day)
+│    │   ├── boxandwhiskerself.py (produce box and whisker plots for single machine data 
+                  partitioned by day)
 │    │   ├── boxandwhiskertotal.py (produce box and whisker plots for all data collected)
 │    │   ├── dataformatting.py (format csv data for boxplotting)
 │    │   └── ~sssecret.py (file with paths and turn order for automator)
 ├── results/
-│   ├── mtanveer (DataCenter).csv (sample output file storing results from file transfers to host mtanveer in location DataCenter)
+│   ├── mtanveer (DataCenter).csv (sample output file storing results from file transfers 
+            to host mtanveer in location DataCenter)
 ├── scatterplotcreation/
 │   ├── output/ (folder to hold PDFs produced)
 │   ├── requirements.txt (required packages for python compilation)
 │   └── src/
 │   │   ├── clusterscatter.py (produce scatterplots for cluster data partitioned by day)
 │   │   ├── dataformatting.py (format csv data for scatterplotting)
-│   │   ├── scatterplot.py (produce scatterplots for data by workstation partitioned by day)
+│   │   ├── scatterplot.py (produce scatterplots for data by workstation partitioned 
+                 by day)
 │   │   ├── scatterplotconsolidated.py (produce scatterplots for data by workstation)
-│   │   ├── scatterplotunaveraged.py (produce scatterplots for unaveraged data by workstations partitioned by day)
+│   │   ├── scatterplotunaveraged.py (produce scatterplots for unaveraged data by 
+                 workstations partitioned by day)
 │   │   └── ~ssecret.py (file with paths and turn order for automator)
 └── scripts/
-      ├── automator.py (automates the running of file transfer and pn shifting between two machines (connects with below))
-      ├── clusterautomator.py (automates the running of file transfer on the cluster (connects with above))
+      ├── automator.py (automates the running of file transfer and pn shifting between two 
+             machines (connects with below))
+      ├── clusterautomator.py (automates the running of file transfer on the cluster 
+             (connects with above))
       ├── clusteroverib.py (transfers files on cluster over Infiniband connection)
       ├── clusteroverpn.py (transfers files on cluster over SMB connection)
-      ├── control.txt ("lock" file for automator.py, indicates which machine is currently transferring)
+      ├── control.txt ("lock" file for automator.py, indicates which machine is currently 
+             transferring)
       ├── data_creation/
       │   ├── 10g.py (sample script to create a 10gb file)
       │   └── 10m.py (sample script to create 10gb worth of 10mb files)
       ├── filetransfer.py (file transfer script over remote SMB connection)      
-      ├── multiautomator.py (automates the running of m-t file transfer and pn shifting between two machines)    
-      ├── multiclusterautomator.py (automates the running of m-t file transfer on the cluster over IB)   
+      ├── multiautomator.py (automates the running of m-t file transfer and pn shifting 
+             between two machines)    
+      ├── multiclusterautomator.py (automates the running of m-t file transfer on the 
+             cluster over IB)   
       ├── multithreaded.py (multi-threaded file transfer script over remote SMB connection)    
-      ├── multithreadedclusterIB.py (multi-threaded file transfer script over IB connection on cluster)          
+      ├── multithreadedclusterIB.py (multi-threaded file transfer script over IB connection 
+             on cluster)          
       ├── ~secret.py (file with paths and turn order for automator)
       ├── singlethreaded.py (single-threaded file transfer for multithreaded test script)
-      └── singlethreadedclusterIB.py (single-threaded file transfer for multithreaded cluster test script)
+      └── singlethreadedclusterIB.py (single-threaded file transfer for multithreaded 
+             cluster test script)
 ```
 
 - `README.md`: This file provides an overview of the project and its file structure.
