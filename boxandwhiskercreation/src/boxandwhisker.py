@@ -38,9 +38,11 @@ for day in data:
     for transfer_size in ['10 GB', '10 MB']:
         if (day['timestamp'][0].date() != pd.Timestamp.now().date() and 
             os.path.exists(rf'{path}Box and Whisker - {day_text} {transfer_size} Transfers.html')):
+            print("file exists")
             continue
         elif (df[(df['machine'] == machine1) & (df['type'] == transfer_size)].empty 
               or df[(df['machine'] == machine2) & (df['type'] == transfer_size)].empty):
+            
             continue
         # prepare figure for plotting
         fig = make_subplots(rows=1, cols=1)
@@ -67,7 +69,7 @@ for day in data:
                                      ))
 
         # create box plots
-        fig.update_layout(title_text=f'Box and Whisker Plot for {day_text} - {transfer_size}',
+        fig.update_layout(title_text=f'{machine1} vs {machine2} - {transfer_size} Transfers',
                           yaxis_title='Transfer Speed (MB/s)',
                           margin=dict(b=170))
 
@@ -93,5 +95,5 @@ for day in data:
             t_test_text += "<br>No significant difference"
         fig.add_annotation(text=t_test_text, xref="paper", yref="paper",
                        x=0.5, y=-0.34, showarrow=False, align="center", font=dict(size=10))
-        fig.write_html(f'{path}Box and Whisker - {day_text} {transfer_size} Transfers.html')
+        fig.write_html(f'{path}Box and Whisker - {machine1} vs. {machine2} {transfer_size} Transfers.html')
         fig.show()

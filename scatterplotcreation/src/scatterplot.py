@@ -82,11 +82,12 @@ for day in data:
     
     stats_text = ""
     for protocol, color in protocol_colors.items():
-        protocol_data = df[df['protocolnode'] == protocol]['transferspeed_MB/s']
-        if not protocol_data.empty:
-            std_dev_protocol = np.std(protocol_data)
-            variance = np.var(protocol_data)
-            stats_text += f"{protocol}<br>Std Dev: {std_dev_protocol:.2f}<br>Variance: {variance:.2f}<br><br>"
+        protocol_data_10gb = df[(df['protocolnode'] == protocol) & (df['type'] == "10 GB")]['transferspeed_MB/s']
+        protocol_data_10mb = df[(df['protocolnode'] == protocol) & (df['type'] == "10 MB")]['transferspeed_MB/s']
+        if not protocol_data_10gb.empty:
+            std_dev_protocol_10gb = np.std(protocol_data_10gb)
+            std_dev_protocol_10mb = np.std(protocol_data_10mb)
+            stats_text += f"{protocol}<br>Std Dev 10gb: {std_dev_protocol_10gb:.2f}<br>Std Dev 10mb: {std_dev_protocol_10mb:.2f}<br><br>"
     # add std dev and variance for all data
     variance_gb = np.var(ten_GB_data['transferspeed_MB/s'])
     variance_mb = np.var(ten_MB_data['transferspeed_MB/s'])

@@ -56,7 +56,7 @@ for transfer_size in ['10 GB', '10 MB']:
                                     ))
 
     # create box plots
-    fig.update_layout(title=f'Box and Whisker Plot - All {transfer_size} Transfers',
+    fig.update_layout(title=f'{machine1} vs {machine2} - All {transfer_size} Transfers',
                       yaxis_title='Transfer Speed (MB/s)',
                       boxmode='group',
                       margin=dict(b=170))
@@ -87,6 +87,6 @@ for transfer_size in ['10 GB', '10 MB']:
 
     fig.add_annotation(text=t_test_text, xref="paper", yref="paper",
                        x=0.5, y=-0.34, showarrow=False, align="center", font=dict(size=10))
-    fig.write_html(f'{path}Box and Whisker - All {transfer_size} Transfers.html')
+    fig.write_html(f'{path}{machine1} vs {machine2} - All {transfer_size}.html')
     # display the plot
     fig.show()
